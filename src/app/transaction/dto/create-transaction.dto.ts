@@ -24,7 +24,7 @@ export class CreateTransactionDto {
   @IsNotEmpty()
   @IsNumber(
     { maxDecimalPlaces: 2 },
-    { message: `"Value" field must be a decimal number'` },
+    { message: 'Value field must be a decimal number' },
   )
   value: number;
 }

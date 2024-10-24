@@ -38,6 +38,6 @@ model Transaction {
 
 enum TransactionTypeEnum {
   DEPOSIT
-  WITHDRAWAL
+  WITHDRAW
   TRANSFER
 }

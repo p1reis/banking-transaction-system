@@ -1,24 +1,31 @@
 import {
   Controller,
   Get,
-  Post,
   Body,
   Param,
   Delete,
   UsePipes,
   ValidationPipe,
+  Patch,
 } from '@nestjs/common';
 import { TransactionService } from './transaction.service';
 import { CreateDepositDto } from './dto/create-deposit.dto';
+import { CreateWithdrawDto } from './dto/create-withdraw.dto';
 
 @Controller('transaction')
 export class TransactionController {
-  constructor(private readonly transactionService: TransactionService) {}
+  constructor(private readonly transactionService: TransactionService) { }
 
-  @Post('deposit')
+  @Patch('deposit')
   @UsePipes(new ValidationPipe({ transform: true }))
   async deposit(@Body() createDepositDto: CreateDepositDto) {
     return await this.transactionService.deposit(createDepositDto);
+  }
+
+  @Patch('withdraw')
+  @UsePipes(new ValidationPipe({ transform: true }))
+  async withdraw(@Body() createWithdrawDto: CreateWithdrawDto) {
+    return await this.transactionService.withdraw(createWithdrawDto);
   }
 
   @Get()

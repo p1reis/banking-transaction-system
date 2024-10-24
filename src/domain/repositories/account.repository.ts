@@ -4,7 +4,7 @@ import { PrismaService } from 'src/infrastructure/database/connection/prisma.ser
 
 @Injectable()
 export class AccountRepository {
-  constructor(private readonly prisma: PrismaService) {}
+  constructor(private readonly prisma: PrismaService) { }
 
   private get account() {
     return this.prisma.account;
@@ -37,7 +37,7 @@ export class AccountRepository {
     });
   }
 
-  async addValue(cuid: string, balance: number): Promise<Account> {
+  async updateBalance(cuid: string, balance: number): Promise<Account> {
     return await this.account.update({
       where: {
         cuid: cuid,
