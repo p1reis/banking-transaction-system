@@ -26,6 +26,17 @@ export class AccountRepository {
     });
   }
 
+  async findUniqueByName(firstName: string, lastName: string): Promise<any> {
+    const account = await this.account.findFirst({
+      where: {
+        AND: {
+          firstName: { equals: firstName },
+          lastName: { equals: lastName }
+        },
+      },
+    });
+  }
+
   async addValue(cuid: string, balance: number): Promise<Account> {
     return await this.account.update({
       where: {

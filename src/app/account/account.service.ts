@@ -14,14 +14,22 @@ export class AccountService {
   constructor(
     private readonly accountRepository: AccountRepository,
     private readonly generateAccountNumber: GenerateAccountNumberUtils,
-  ) {}
+  ) { }
 
   async createAccount({
     firstName,
     lastName,
     balance,
   }: CreateAccountDto): Promise<AccountMapped> {
-    console.log('Criando conta com:', { firstName, lastName, balance });
+
+    const account = await this.accountRepository.findUniqueByName(firstName, lastName);
+
+    if (account != null) {
+      throw new HttpException(
+        'Account already exists.',
+        HttpStatus.BAD_REQUEST,
+      );
+    }
 
     if (balance < 0) {
       throw new HttpException(
@@ -30,14 +38,14 @@ export class AccountService {
       );
     }
 
-    const account = await this.accountRepository.create({
+    const newAccount = await this.accountRepository.create({
       number: this.generateAccountNumber.generateAccountNumber(),
       firstName,
       lastName,
       balance,
     });
 
-    return AccountMapper.map(account);
+    return AccountMapper.map(newAccount);
   }
 
   findAllAccounts() {
