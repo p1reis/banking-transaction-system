@@ -5,7 +5,9 @@ CREATE TYPE "TransactionTypeEnum" AS ENUM ('DEPOSIT', 'WITHDRAWAL', 'TRANSFER');
 CREATE TABLE "accounts" (
     "id" SERIAL NOT NULL,
     "cuid" TEXT NOT NULL,
-    "Número" TEXT NOT NULL,
+    "Numero" TEXT NOT NULL,
+    "Nome" TEXT NOT NULL,
+    "Sobrenome" TEXT NOT NULL,
     "Saldo" DOUBLE PRECISION NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -30,7 +32,7 @@ CREATE TABLE "transactions" (
 CREATE UNIQUE INDEX "accounts_cuid_key" ON "accounts"("cuid");
 
 -- CreateIndex
-CREATE UNIQUE INDEX "accounts_Número_key" ON "accounts"("Número");
+CREATE UNIQUE INDEX "accounts_Numero_key" ON "accounts"("Numero");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "transactions_cuid_key" ON "transactions"("cuid");

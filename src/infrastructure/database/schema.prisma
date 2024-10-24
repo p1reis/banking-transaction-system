@@ -8,33 +8,30 @@ datasource db {
 }
 
 model Account {
-  id        Int      @id @default(autoincrement())
-  cuid      String   @unique @default(cuid())
-  number    String   @unique @map("Número")
-  balance   Float    @map("Saldo")
-  createdAt DateTime @default(now())
-  updatedAt DateTime @default(now()) @updatedAt
-
-  // Relation:
-  transactionsFrom Transaction[] @relation("TransactionsFrom")
+  id               Int           @id @default(autoincrement())
+  cuid             String        @unique @default(cuid())
+  number           String        @unique @map("Numero")
+  firstName        String        @map("Nome")
+  lastName         String        @map("Sobrenome")
+  balance          Float         @map("Saldo")
+  createdAt        DateTime      @default(now())
+  updatedAt        DateTime      @default(now()) @updatedAt
   transactionsTo   Transaction[] @relation("TransactionsTo")
+  transactionsFrom Transaction[] @relation("TransactionsFrom")
 
   @@map("accounts")
 }
 
 model Transaction {
-  id        Int                 @id @default(autoincrement())
-  cuid      String              @unique @default(cuid())
-  type      TransactionTypeEnum @map("Tipo")
-  value     Float               @map("Valor")
-  createdAt DateTime            @default(now())
-
-  // Relation:
-  accountFromCuid String  @map("Origem")
-  accountFrom     Account @relation("TransactionsFrom", fields: [accountFromCuid], references: [cuid])
-
-  accountToCuid String  @map("Destino")
-  accountTo     Account @relation("TransactionsTo", fields: [accountToCuid], references: [cuid])
+  id              Int                 @id @default(autoincrement())
+  cuid            String              @unique @default(cuid())
+  type            TransactionTypeEnum @map("Tipo")
+  value           Float               @map("Valor")
+  createdAt       DateTime            @default(now())
+  accountFromCuid String              @map("Origem")
+  accountToCuid   String              @map("Destino")
+  accountTo       Account             @relation("TransactionsTo", fields: [accountToCuid], references: [cuid])
+  accountFrom     Account             @relation("TransactionsFrom", fields: [accountFromCuid], references: [cuid])
 
   @@map("transactions")
 }
