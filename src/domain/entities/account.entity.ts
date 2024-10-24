@@ -6,8 +6,9 @@ import {
   UpdateDateColumn,
   OneToMany,
 } from 'typeorm';
+import { Transaction } from './transaction.entity';
 
-@Entity('Pilot')
+@Entity('account')
 export class Account {
   @PrimaryGeneratedColumn({ type: 'int', name: 'id', unsigned: true })
   id: number;
@@ -32,4 +33,10 @@ export class Account {
 
   @UpdateDateColumn({ name: 'updatedAt', type: 'timestamp' })
   updatedAt: Date;
+
+  @OneToMany(() => Transaction, transaction => transaction.accountFrom)
+  transactionsFrom: Transaction[];
+
+  @OneToMany(() => Transaction, transaction => transaction.accountTo)
+  transactionsTo: Transaction[];
 }

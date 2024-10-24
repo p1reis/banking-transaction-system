@@ -16,8 +16,8 @@ model Account {
   balance          Float         @map("Saldo")
   createdAt        DateTime      @default(now())
   updatedAt        DateTime      @default(now()) @updatedAt
-  transactionsTo   Transaction[] @relation("TransactionsTo")
-  transactionsFrom Transaction[] @relation("TransactionsFrom")
+  transactionsTo   Transaction[] @relation("transactionsTo")
+  transactionsFrom Transaction[] @relation("transactionsFrom")
 
   @@map("accounts")
 }
@@ -29,9 +29,9 @@ model Transaction {
   value           Float               @map("Valor")
   createdAt       DateTime            @default(now())
   accountFromCuid String              @map("Origem")
-  accountToCuid   String              @map("Destino")
-  accountTo       Account             @relation("TransactionsTo", fields: [accountToCuid], references: [cuid])
-  accountFrom     Account             @relation("TransactionsFrom", fields: [accountFromCuid], references: [cuid])
+  accountToCuid   String?             @map("Destino")
+  accountTo       Account?            @relation("transactionsTo", fields: [accountToCuid], references: [cuid])
+  accountFrom     Account             @relation("transactionsFrom", fields: [accountFromCuid], references: [cuid])
 
   @@map("transactions")
 }
