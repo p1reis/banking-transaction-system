@@ -15,7 +15,7 @@ import { UpdateAccountDto } from './dto/update-account.dto';
 
 @Controller('account')
 export class AccountController {
-  constructor(private readonly accountService: AccountService) { }
+  constructor(private readonly accountService: AccountService) {}
 
   @Post()
   @UsePipes(new ValidationPipe({ transform: true }))

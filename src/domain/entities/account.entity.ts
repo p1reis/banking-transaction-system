@@ -34,9 +34,9 @@ export class Account {
   @UpdateDateColumn({ name: 'updatedAt', type: 'timestamp' })
   updatedAt: Date;
 
-  @OneToMany(() => Transaction, transaction => transaction.accountFrom)
+  @OneToMany(() => Transaction, (transaction) => transaction.accountFrom)
   transactionsFrom: Transaction[];
 
-  @OneToMany(() => Transaction, transaction => transaction.accountTo)
+  @OneToMany(() => Transaction, (transaction) => transaction.accountTo)
   transactionsTo: Transaction[];
 }

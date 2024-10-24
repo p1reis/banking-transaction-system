@@ -11,6 +11,9 @@ export class CreateAccountDto {
 
   @IsPositive()
   @IsNotEmpty()
-  @IsNumber({ maxDecimalPlaces: 2 }, { message: `"Value" field must be a decimal number'` })
+  @IsNumber(
+    { maxDecimalPlaces: 2 },
+    { message: `"Value" field must be a decimal number'` },
+  )
   balance: number;
 }

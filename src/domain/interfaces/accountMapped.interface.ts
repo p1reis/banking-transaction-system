@@ -1,8 +1,8 @@
 export interface AccountMapped {
-  message: string,
+  message: string;
   account: {
     number: string;
     name: string;
     balance: number;
-  }
+  };
 }

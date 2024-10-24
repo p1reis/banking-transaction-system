@@ -15,7 +15,7 @@ import { TransactionModule } from './transaction/transaction.module';
 
     PrismaModule,
     AccountModule,
-    TransactionModule
+    TransactionModule,
   ],
 })
-export class AppModule { }
+export class AppModule {}

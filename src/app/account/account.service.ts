@@ -14,15 +14,17 @@ export class AccountService {
   constructor(
     private readonly accountRepository: AccountRepository,
     private readonly generateAccountNumber: GenerateAccountNumberUtils,
-  ) { }
+  ) {}
 
   async createAccount({
     firstName,
     lastName,
     balance,
   }: CreateAccountDto): Promise<AccountMapped> {
-
-    const account = await this.accountRepository.findUniqueByName(firstName, lastName);
+    const account = await this.accountRepository.findUniqueByName(
+      firstName,
+      lastName,
+    );
 
     if (account != null) {
       throw new HttpException(

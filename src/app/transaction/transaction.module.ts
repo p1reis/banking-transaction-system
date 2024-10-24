@@ -8,11 +8,6 @@ import { AccountRepository } from '@/src/domain/repositories/account.repository'
 @Module({
   imports: [PrismaModule],
   controllers: [TransactionController],
-  providers: [
-    TransactionRepository,
-    TransactionService,
-
-    AccountRepository
-  ],
+  providers: [TransactionRepository, TransactionService, AccountRepository],
 })
-export class TransactionModule { }
+export class TransactionModule {}

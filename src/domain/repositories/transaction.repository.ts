@@ -4,30 +4,30 @@ import { PrismaService } from 'src/infrastructure/database/connection/prisma.ser
 
 @Injectable()
 export class TransactionRepository {
-    constructor(private readonly prisma: PrismaService) { }
+  constructor(private readonly prisma: PrismaService) {}
 
-    private get transaction() {
-        return this.prisma.transaction;
-    }
+  private get transaction() {
+    return this.prisma.transaction;
+  }
 
-    async create(data: Prisma.TransactionCreateInput): Promise<Transaction> {
-        const transaction = await this.transaction.create({
-            data,
-            include: {
-                accountFrom: {
-                    include: { transactionsFrom: { select: { cuid: true } } },
-                }
-            }
-        });
+  async create(data: Prisma.TransactionCreateInput): Promise<Transaction> {
+    const transaction = await this.transaction.create({
+      data,
+      include: {
+        accountFrom: {
+          include: { transactionsFrom: { select: { cuid: true } } },
+        },
+      },
+    });
 
-        return transaction;
-    }
+    return transaction;
+  }
 
-    async findUnique(cuid: string): Promise<Transaction> {
-        return await this.transaction.findUnique({
-            where: {
-                cuid,
-            },
-        });
-    }
+  async findUnique(cuid: string): Promise<Transaction> {
+    return await this.transaction.findUnique({
+      where: {
+        cuid,
+      },
+    });
+  }
 }
