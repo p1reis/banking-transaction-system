@@ -14,12 +14,15 @@ RUN npm install -g pnpm
 # Install dependencies:
 RUN pnpm install
 
-COPY . .
+# Copy configuration files:
+COPY tsconfig.json .
+COPY tsconfig.build.json .
+COPY nest-cli.json .
 
-# Specify that the container will listen on port 3333 at runtime
-EXPOSE 3333
+# Copy source code and Prisma files:
+COPY ./src ./src
 
-# Generate Prisma client:
+# Generate Prisma client
 RUN pnpm exec prisma generate
 
 # Run the application

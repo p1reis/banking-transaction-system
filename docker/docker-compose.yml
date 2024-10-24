@@ -3,11 +3,8 @@ name: grupo-primo
 services:
   postgres:
     image: postgres:alpine3.20
-    container_name: database
+    container_name: postgres
     restart: always
-    environment:
-      - POSTGRES_USER=user
-      - POSTGRES_PASSWORD=pass
     env_file:
       - ./../.env
     volumes:
@@ -25,7 +22,7 @@ services:
     volumes:
       - application:/var/lib/application/data
     ports:
-      - 4000:3333
+      - 4000:4000
 
 volumes:
   postgres:
