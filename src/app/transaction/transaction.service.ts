@@ -20,15 +20,15 @@ export class TransactionService {
     from,
     value,
   }: CreateDepositDto): Promise<DepositMapped> {
-    const account = this.accountRepository.findUnique(from);
+    const account = await this.accountRepository.findUnique(from);
 
     if (!account) {
       throw new HttpException('Account not found.', HttpStatus.NOT_FOUND);
     }
-    const cuid = (await account).cuid;
+    const cuid = account.cuid;
 
     try {
-      const newBalance = (await account).balance + value;
+      const newBalance = account.balance + value;
 
       await this.accountRepository.updateBalance(cuid, newBalance);
       const transaction = await this.createTransaction({ type, cuid, value });
@@ -48,14 +48,14 @@ export class TransactionService {
     from,
     value,
   }: CreateWithdrawDto): Promise<WithdrawMapped> {
-    const account = this.accountRepository.findUnique(from);
+    const account = await this.accountRepository.findUnique(from);
 
     if (!account) {
       throw new HttpException('Account not found.', HttpStatus.NOT_FOUND);
     }
 
-    const cuid = (await account).cuid;
-    const balance = (await account).balance;
+    const cuid = account.cuid;
+    const balance = account.balance;
 
     if (balance < value) {
       throw new HttpException(
