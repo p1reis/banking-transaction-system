@@ -17,3 +17,20 @@ export interface WithdrawMapped {
   withdrawValue: number;
   newBalance: number;
 }
+
+export interface TransferMapped {
+  cuid: string;
+  type: string;
+  when: Date;
+  transferValue: number;
+  origin: {
+    from: string;
+    accountNumber: string;
+    newBalance: number;
+  },
+  destiny: {
+    to: string;
+    accountNumber: string;
+    newBalance: number;
+  }
+}
