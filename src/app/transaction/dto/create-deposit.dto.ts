@@ -1,8 +1,9 @@
-import { IsEnum, IsNotEmpty, IsNumber, IsOptional, IsPositive, IsString } from "class-validator";
+import { IsEnum, IsNotEmpty, IsNumber, IsPositive, IsString } from "class-validator";
 import { TransactionTypeEnum } from '@prisma/client'
 
 export class CreateDepositDto {
     @IsEnum(TransactionTypeEnum)
+    @IsNotEmpty({ message: `Transaction type must be DEPOSIT` })
     type: TransactionTypeEnum;
 
     @IsString()

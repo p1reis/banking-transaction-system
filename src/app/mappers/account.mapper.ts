@@ -1,11 +1,14 @@
-import { Account } from 'src/domain/entities/account.entity';
+import { Account } from "@prisma/client";
 
 export class AccountMapper {
   static map(raw?: Account) {
     return {
-      number: raw?.number,
-      name: raw?.firstName + raw?.lastName,
-      balance: raw?.balance,
+      message: 'Account created successfully!',
+      account: {
+        number: raw?.number,
+        name: `${raw?.firstName} ${raw?.lastName}`,
+        balance: raw?.balance,
+      }
     };
   }
 }

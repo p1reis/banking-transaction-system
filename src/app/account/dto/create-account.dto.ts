@@ -1,15 +1,16 @@
-import { IsDecimal, IsNotEmpty, IsString } from 'class-validator';
+import { IsNotEmpty, IsNumber, IsPositive, IsString } from 'class-validator';
 
 export class CreateAccountDto {
   @IsString()
-  @IsNotEmpty()
+  @IsNotEmpty({ message: `"firstName" field must be an valid account number` })
   firstName: string;
 
   @IsString()
-  @IsNotEmpty()
+  @IsNotEmpty({ message: `"lastName" field must be an valid account number` })
   lastName: string;
 
-  @IsDecimal({ decimal_digits: '2' })
+  @IsPositive()
   @IsNotEmpty()
+  @IsNumber({ maxDecimalPlaces: 2 }, { message: `"Value" field must be a decimal number'` })
   balance: number;
 }
