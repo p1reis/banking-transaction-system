@@ -7,9 +7,7 @@ import { Queue } from 'bullmq';
 
 @Injectable()
 export class TransactionService {
-  constructor(
-    @InjectQueue('transactions') private transactionQueue: Queue,
-  ) { }
+  constructor(@InjectQueue('transactions') private transactionQueue: Queue) {}
 
   async deposit({ type, from, value }: CreateDepositDto) {
     try {

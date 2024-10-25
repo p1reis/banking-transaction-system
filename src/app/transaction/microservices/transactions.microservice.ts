@@ -13,11 +13,12 @@ import {
   TransferMapper,
   WithdrawMapper,
 } from '../../mappers/transaction.mapper';
+import { Cache } from 'cache-manager';
 
 @Controller()
 export class TransactionsMicroservice {
   constructor(
-    @Inject(CACHE_MANAGER) private cacheManager,
+    @Inject(CACHE_MANAGER) private cacheManager: Cache,
     private readonly accountRepository: AccountRepository,
     private readonly transactionRepository: TransactionRepository,
   ) {}
