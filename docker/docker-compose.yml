@@ -11,6 +11,13 @@ services:
       - postgres:/var/lib/postgresql/data
     ports:
       - 5432:5432
+
+  redis:
+    image: redis:alpine
+    container_name: redis
+    ports:
+      - '6379:6379'
+
   application:
     container_name: application
     restart: always
