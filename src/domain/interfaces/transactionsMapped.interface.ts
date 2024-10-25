@@ -27,10 +27,10 @@ export interface TransferMapped {
     from: string;
     accountNumber: string;
     newBalance: number;
-  },
+  };
   destiny: {
     to: string;
     accountNumber: string;
     newBalance: number;
-  }
+  };
 }

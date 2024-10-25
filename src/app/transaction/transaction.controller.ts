@@ -15,7 +15,7 @@ import { CreateTransferDto } from './dto/create-transfer.dto';
 
 @Controller('transaction')
 export class TransactionController {
-  constructor(private readonly transactionService: TransactionService) { }
+  constructor(private readonly transactionService: TransactionService) {}
 
   @Patch('deposit')
   @UsePipes(new ValidationPipe({ transform: true }))

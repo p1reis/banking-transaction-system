@@ -4,7 +4,7 @@ import { PrismaService } from 'src/infrastructure/database/connection/prisma.ser
 
 @Injectable()
 export class AccountRepository {
-  constructor(private readonly prisma: PrismaService) { }
+  constructor(private readonly prisma: PrismaService) {}
 
   private get account() {
     return this.prisma.account;

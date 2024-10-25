@@ -4,7 +4,7 @@ import { PrismaService } from 'src/infrastructure/database/connection/prisma.ser
 
 @Injectable()
 export class TransactionRepository {
-  constructor(private readonly prisma: PrismaService) { }
+  constructor(private readonly prisma: PrismaService) {}
 
   private get transaction() {
     return this.prisma.transaction;
@@ -21,9 +21,9 @@ export class TransactionRepository {
         },
         accountTo: {
           include: {
-            transactionsTo: { select: { cuid: true } }
-          }
-        }
+            transactionsTo: { select: { cuid: true } },
+          },
+        },
       },
     });
 
