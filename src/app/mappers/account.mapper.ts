@@ -1,13 +1,24 @@
 import { Account } from '@prisma/client';
 
 export class AccountMapper {
-  static map(raw?: Account) {
+  static newAccount(raw?: Account) {
     return {
       message: 'Account created successfully!',
       account: {
         number: raw?.number,
         name: `${raw?.firstName} ${raw?.lastName}`,
-        balance: raw?.balance,
+        balance: raw?.balance ? raw?.balance : 0,
+        createdAt: raw?.createdAt,
+      },
+    };
+  }
+  static accountFound(raw?: Account) {
+    return {
+      account: {
+        number: raw?.number,
+        name: `${raw?.firstName} ${raw?.lastName}`,
+        balance: raw?.balance ? raw?.balance : 0,
+        createdAt: raw?.createdAt,
       },
     };
   }

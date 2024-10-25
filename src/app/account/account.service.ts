@@ -2,7 +2,7 @@ import { HttpException, HttpStatus, Inject, Injectable } from '@nestjs/common';
 
 import { AccountRepository } from '@/src/domain/repositories/account.repository';
 
-import { AccountMapped } from '@/src/domain/interfaces/accountMapped.interface';
+import { CreateAccountMapped } from '@/src/domain/interfaces/accountMapped.interface';
 import { GenerateAccountNumberUtils } from '@/src/shared/utils/generate-account-number';
 
 import { AccountMapper } from '../mappers/account.mapper';
@@ -19,13 +19,13 @@ export class AccountService {
     private readonly accountRepository: AccountRepository,
     private readonly generateAccountNumber: GenerateAccountNumberUtils,
     private readonly checkAccountUtils: CheckAccountUtils,
-  ) {}
+  ) { }
 
   async createAccount({
     firstName,
     lastName,
     balance,
-  }: CreateAccountDto): Promise<AccountMapped> {
+  }: CreateAccountDto): Promise<CreateAccountMapped> {
     try {
       const accountExists = await this.checkAccountUtils.checkIfAccountExists({
         firstName,
@@ -63,7 +63,7 @@ export class AccountService {
 
       await this.cacheManager.set(`accounts`, JSON.stringify(accountsToCache));
 
-      return AccountMapper.map(newAccount);
+      return AccountMapper.newAccount(newAccount);
     } catch (error) {
       throw new HttpException(
         `Account creation failed: ${error.message}`,
@@ -76,8 +76,19 @@ export class AccountService {
     return `This action returns all account`;
   }
 
-  findOneAccount(number: string) {
-    return `This action returns a #${number} account`;
+  async findOneAccount(number: string) {
+    const accountIsInCache = await this.checkAccountUtils.accountIsInCache(number)
+    const accountInDatabase = await this.accountRepository.findUnique(number);
+
+    if (accountIsInCache) {
+      return AccountMapper.accountFound(accountIsInCache);
+    }
+
+    if (accountInDatabase) {
+      return AccountMapper.accountFound(accountInDatabase);
+    }
+
+    throw new HttpException('Account not found', HttpStatus.NOT_FOUND);
   }
 
   updateAccount(number: string, updateAccountDto: UpdateAccountDto) {

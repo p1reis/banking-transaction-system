@@ -1,4 +1,4 @@
-export interface AccountMapped {
+export interface CreateAccountMapped {
   message: string;
   account: {
     number: string;
