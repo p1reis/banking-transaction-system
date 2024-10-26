@@ -21,6 +21,6 @@ import { redisStore } from 'cache-manager-redis-yet';
       },
     }),
   ],
-  exports: [CacheModule], // Certifique-se de exportar o CacheModule
+  exports: [CacheModule],
 })
-export class CustomCacheModule {}
+export class CustomCacheModule { }

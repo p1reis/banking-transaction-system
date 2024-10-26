@@ -1,135 +1,116 @@
 import { AccountRepository } from '@/src/domain/repositories/account.repository';
 import { CreateDepositDto } from '../dto/create-deposit.dto';
 
-import { Controller, Inject } from '@nestjs/common';
+import { Controller, HttpException, HttpStatus } from '@nestjs/common';
 import { TransactionRepository } from '@/src/domain/repositories/transaction.repository';
 import { CreateTransactionDto } from '../dto/create-transaction.dto';
-import { CACHE_MANAGER } from '@nestjs/cache-manager';
-import { EventPattern } from '@nestjs/microservices';
+import { CheckAccountUtils } from '../../utils/check-account.utils';
+import { AccountsToCacheUtils } from '../../utils/accounts-to-cache.utils';
 import { CreateWithdrawDto } from '../dto/create-withdraw.dto';
 import { CreateTransferDto } from '../dto/create-transfer.dto';
-import {
-  DepositMapper,
-  TransferMapper,
-  WithdrawMapper,
-} from '../../mappers/transaction.mapper';
-import { Cache } from 'cache-manager';
 
 @Controller()
 export class TransactionsMicroservice {
   constructor(
-    @Inject(CACHE_MANAGER) private cacheManager: Cache,
     private readonly accountRepository: AccountRepository,
     private readonly transactionRepository: TransactionRepository,
-  ) {}
+    private readonly checkAccountUtils: CheckAccountUtils,
+    private readonly sendAccountToCache: AccountsToCacheUtils,
+  ) { }
 
-  @EventPattern('transaction.deposit')
   async processDeposit({ from, value }: CreateDepositDto) {
-    const account = await this.accountRepository.findUnique(from);
+    const account = await this.checkAccountUtils.checkIfAccountExistsByNumber(from);
 
     if (!account) {
-      throw new Error('Account not found.');
+      throw new HttpException('Account not found.', HttpStatus.NOT_FOUND);
     }
     const cuid = account.cuid;
 
     const newBalance = account.balance + value;
 
-    await this.accountRepository.updateBalance(cuid, newBalance);
-    const transaction = await this.createTransaction({
+    const updated = await this.accountRepository.updateBalance(cuid, newBalance);
+    await this.createTransaction({
       type: 'DEPOSIT',
       cuid,
       value,
     });
 
-    await this.cacheManager.set(`balance_${from}`, account.balance + value);
-    await this.cacheManager.set(`deposit_${from}`, transaction.cuid);
-
-    return DepositMapper.map(transaction);
+    await this.sendAccountToCache.sendingAccountsToCache([updated])
   }
 
-  @EventPattern('transaction.withdraw')
   async processWithdraw({ from, value }: CreateWithdrawDto) {
-    const account = await this.accountRepository.findUnique(from);
+    const account = await this.checkAccountUtils.checkIfAccountExistsByNumber(from);
 
     if (!account) {
-      throw new Error('Account not found.');
+      throw new HttpException('Account not found.', HttpStatus.NOT_FOUND);
     }
-    const cuid = account.cuid;
-    const balance = account.balance;
 
-    if (balance < value) {
-      throw new Error(
-        `Your withdraw value can't be lower than your current balance`,
+    if (account.balance < value) {
+      throw new HttpException(
+        'Your balance is not enough to proceed.',
+        HttpStatus.BAD_REQUEST,
       );
     }
 
+    const cuid = account.cuid;
+
     const newBalance = account.balance - value;
 
-    await this.accountRepository.updateBalance(cuid, newBalance);
-    const transaction = await this.createTransaction({
+    const updated = await this.accountRepository.updateBalance(cuid, newBalance);
+    await this.createTransaction({
       type: 'WITHDRAW',
       cuid,
       value,
     });
 
-    await this.cacheManager.set(`balance_${from}`, account.balance + value);
-    await this.cacheManager.set(`withdraw_${from}`, transaction.cuid);
-    return WithdrawMapper.map(transaction);
+    await this.sendAccountToCache.sendingAccountsToCache([updated])
   }
 
-  @EventPattern('transaction.transfer')
   async processTransfer({ from, to, value }: CreateTransferDto) {
-    const accountFrom = await this.accountRepository.findUnique(from);
-    const accountTo = await this.accountRepository.findUnique(to);
+    const accountFrom = await this.checkAccountUtils.checkIfAccountExistsByNumber(from);
+    const accountTo = await this.checkAccountUtils.checkIfAccountExistsByNumber(to);
 
     if (!accountFrom) {
-      throw new Error('Origin account not found.');
+      throw new HttpException('Origin account not found.', HttpStatus.NOT_FOUND);
     }
 
     if (!accountTo) {
-      throw new Error('Destiny account not found.');
+      throw new HttpException('Destiny account not found.', HttpStatus.NOT_FOUND);
     }
 
     const origin = {
       cuid: accountFrom.cuid,
       balance: accountFrom.balance,
       value: value,
-    };
+    }
 
     const destiny = {
       cuid: accountTo.cuid,
       balance: accountTo.balance,
       value: value,
-    };
+    }
 
-    await this.accountRepository.updateBalance(
-      origin.cuid,
-      origin.balance - value,
-    );
-    await this.accountRepository.updateBalance(
-      destiny.cuid,
-      destiny.balance + value,
-    );
-    const transaction = await this.createTransaction({
+    const updatedFrom = await this.accountRepository.updateBalance(origin.cuid, origin.balance - value);
+    const updatedTo = await this.accountRepository.updateBalance(destiny.cuid, destiny.balance + value);
+
+    await this.createTransaction({
       type: 'TRANSFER',
       cuid: origin.cuid,
       to: destiny.cuid,
       value,
     });
 
-    await this.cacheManager.set(`balance_${from}`, origin.balance + value);
-    await this.cacheManager.set(`balance_${to}`, destiny.balance + value);
-    await this.cacheManager.set(`transferFrom_${from}`, transaction.cuid);
-    await this.cacheManager.set(`transferTo_${to}`, transaction.cuid);
-    return TransferMapper.map(transaction);
+    await this.sendAccountToCache.sendingAccountsToCache([updatedFrom, updatedTo])
   }
 
   async createTransaction({ type, cuid, to, value }: CreateTransactionDto) {
-    return await this.transactionRepository.create({
+    const transaction = await this.transactionRepository.create({
       type,
       accountFrom: { connect: { cuid: cuid } },
-      accountTo: { connect: { cuid: to ? to : cuid } },
+      accountTo: { connect: { cuid: to != undefined ? to : cuid } },
       value,
     });
+
+    return transaction
   }
 }

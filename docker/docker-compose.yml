@@ -34,5 +34,7 @@ services:
 volumes:
   postgres:
     name: volume-postgres
+  redis:
+    name: volume-redis
   application:
     name: volume-application
