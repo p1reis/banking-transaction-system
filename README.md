@@ -16,7 +16,7 @@ A API é projetada para garantir a integridade do saldo das contas em todas as o
 
 ## 📖 Tabela de conteúdos
 
-- [Recursos](#-recursos)
+- [Funcionalidades](#-funcionalidades)
 - [Executando a aplicação](#%EF%B8%8Fexecutando-a-aplicação)
   - [Clonar o repositório](#1-clonar-o-repositório-e-navegar-para-a-pasta-backend)
   - [Instalar dependências](#2-instalar-dependências)
@@ -25,6 +25,7 @@ A API é projetada para garantir a integridade do saldo das contas em todas as o
   - [Iniciar a aplicação](#5-iniciar-a-aplicação)
 - [Testes automatizados com Jest](#-testes-automatizados-com-jest)
 - [Tecnologias utilizadas](#%EF%B8%8Ftecnologias-utilizadas)
+- [Roadmap de melhorias](#%EF%B8%8Froadmap-de-melhorias)
 - [Fique em contato](#-fique-em-contato)
 - [Licença](#-licença)
 
@@ -49,6 +50,9 @@ A API é projetada para garantir a integridade do saldo das contas em todas as o
       - O acesso às informações bancárias em cache reduz a carga de consultas ao banco de dados, melhorando a velocidade de acesso às informações, garantindo eficiência e otimizando as operações de transação.
       - Ao acessar informações de uma conta (como saldo e histórico de transações), o sistema primeiro verifica se esses dados estão no cache. Se sim, são retornados imediatamente; se não, a consulta é feita ao banco de dados e o resultado é armazenado no cache para acessos futuros.
       - Quando uma transação é processada, seu status é atualizado no cache. Isso facilita o acompanhamento do estado das transações (pendente, concluída, falha), permitindo que os usuários consultem rapidamente o status de suas transações sem esperar por chamadas ao banco de dados.
+
+> [!IMPORTANT]
+> Este projeto terá futuras atualizações com melhorias e implementação de novas funcionalidades. Você pode conferir as melhorias planejadas no [Roadmap de melhorias](#%EF%B8%8Froadmap-de-melhorias)
  
 ## ⚡️Executando a aplicação
 
@@ -191,6 +195,16 @@ Este projeto não inclui testes end-to-end.
 - `Bull`
 - `PostgreSQL`
 - `Docker`
+
+## 🚀 Roadmap de Melhorias
+
+- Implementação de testes de estresse e carga para avaliar a durabilidade, capacidade de processamento de requisições simultâneas e integridade do sistema sob condições extremas.
+
+- Implementação de scripts para validação da tabela verdade proposta, assegurando a precisão das operações lógicas no sistema;
+
+- Revisão da estrutura de dados para melhor desempenho e escalabilidade.
+
+- Implementação de rotas de consulta a informações detalhadas de contas bancárias;
 
 ## 🫱🏾‍🫲🏾 Contato
 
