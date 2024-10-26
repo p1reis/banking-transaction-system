@@ -6,6 +6,7 @@ import { PrismaModule } from '@/src/infrastructure/database/connection/prisma.mo
 import { GenerateAccountNumberUtils } from '@/src/shared/utils/generate-account-number';
 import { CustomCacheModule } from '../transaction/cache/cache.module';
 import { CheckAccountUtils } from '../utils/check-account.utils';
+import { AccountsToCacheUtils } from '../utils/accounts-to-cache.utils';
 
 @Module({
   imports: [PrismaModule, CustomCacheModule],
@@ -15,6 +16,7 @@ import { CheckAccountUtils } from '../utils/check-account.utils';
     AccountService,
     GenerateAccountNumberUtils,
     CheckAccountUtils,
+    AccountsToCacheUtils,
   ],
 })
-export class AccountModule {}
+export class AccountModule { }

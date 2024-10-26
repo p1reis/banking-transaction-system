@@ -9,16 +9,15 @@ import { AccountMapper } from '../mappers/account.mapper';
 import { CreateAccountDto } from './dto/create-account.dto';
 import { UpdateAccountDto } from './dto/update-account.dto';
 import { CheckAccountUtils } from '../utils/check-account.utils';
-import { CACHE_MANAGER } from '@nestjs/cache-manager';
-import { Cache } from 'cache-manager';
+import { AccountsToCacheUtils } from '../utils/accounts-to-cache.utils';
 
 @Injectable()
 export class AccountService {
   constructor(
-    @Inject(CACHE_MANAGER) private cacheManager: Cache,
     private readonly accountRepository: AccountRepository,
     private readonly generateAccountNumber: GenerateAccountNumberUtils,
     private readonly checkAccountUtils: CheckAccountUtils,
+    private readonly sendAccountsToCache: AccountsToCacheUtils,
   ) { }
 
   async createAccount({
@@ -27,7 +26,7 @@ export class AccountService {
     balance,
   }: CreateAccountDto): Promise<CreateAccountMapped> {
     try {
-      const accountExists = await this.checkAccountUtils.checkIfAccountExists({
+      const accountExists = await this.checkAccountUtils.checkIfAccountExistsByName({
         firstName,
         lastName,
       });
@@ -54,14 +53,7 @@ export class AccountService {
       });
 
       const accounts = await this.accountRepository.findAll();
-      const accountsToCache = accounts.map((account) => ({
-        number: account.number,
-        firstName: account.firstName,
-        lastName: account.lastName,
-        createdAt: account.createdAt,
-      }));
-
-      await this.cacheManager.set(`accounts`, JSON.stringify(accountsToCache));
+      await this.sendAccountsToCache.sendingAccountsToCache(accounts);
 
       return AccountMapper.newAccount(newAccount);
     } catch (error) {
@@ -73,11 +65,12 @@ export class AccountService {
   }
 
   findAllAccounts() {
+    console.log('all accounts')
     return `This action returns all account`;
   }
 
   async findOneAccount(number: string) {
-    const accountIsInCache = await this.checkAccountUtils.accountIsInCache(number)
+    const accountIsInCache = await this.checkAccountUtils.checkIfAccountExistsByNumber(number)
     const accountInDatabase = await this.accountRepository.findUnique(number);
 
     if (accountIsInCache) {

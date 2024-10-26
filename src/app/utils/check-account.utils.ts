@@ -12,7 +12,7 @@ export class CheckAccountUtils {
     private readonly accountRepository: AccountRepository,
   ) { }
 
-  async checkIfAccountExists({ firstName, lastName }): Promise<Account> {
+  async checkIfAccountExistsByName({ firstName, lastName }): Promise<Account> {
     const accountsInCache = await this.cacheManager.get<string>(`accounts`);
 
     if (accountsInCache) {
@@ -34,7 +34,7 @@ export class CheckAccountUtils {
     return accountInDatabase ? accountInDatabase : null;
   }
 
-  async accountIsInCache(number: string): Promise<Account> {
+  async checkIfAccountExistsByNumber(number: string): Promise<Account> {
     const accountsInCache = await this.cacheManager.get<string>(`accounts`);
 
     if (accountsInCache) {
@@ -47,6 +47,10 @@ export class CheckAccountUtils {
 
       return account ? account : null;
     }
+
+    const accountInDatabase = await this.accountRepository.findUnique(number);
+
+    return accountsInCache ? accountInDatabase : null;
 
   }
 }
