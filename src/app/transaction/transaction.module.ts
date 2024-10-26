@@ -22,6 +22,6 @@ import { TransferProcessor } from './queues/processors/transfer.processor';
     TransferProcessor,
     CheckJobsDeposit,
   ],
-  exports: [DepositProcessor]
+  exports: [DepositProcessor],
 })
-export class TransactionModule { }
+export class TransactionModule {}

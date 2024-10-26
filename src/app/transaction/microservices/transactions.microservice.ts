@@ -16,10 +16,11 @@ export class TransactionsMicroservice {
     private readonly transactionRepository: TransactionRepository,
     private readonly checkAccountUtils: CheckAccountUtils,
     private readonly sendAccountToCache: AccountsToCacheUtils,
-  ) { }
+  ) {}
 
   async processDeposit({ from, value }: CreateDepositDto) {
-    const account = await this.checkAccountUtils.checkIfAccountExistsByNumber(from);
+    const account =
+      await this.checkAccountUtils.checkIfAccountExistsByNumber(from);
 
     if (!account) {
       throw new HttpException('Account not found.', HttpStatus.NOT_FOUND);
@@ -28,18 +29,22 @@ export class TransactionsMicroservice {
 
     const newBalance = account.balance + value;
 
-    const updated = await this.accountRepository.updateBalance(cuid, newBalance);
+    const updated = await this.accountRepository.updateBalance(
+      cuid,
+      newBalance,
+    );
     await this.createTransaction({
       type: 'DEPOSIT',
       cuid,
       value,
     });
 
-    await this.sendAccountToCache.sendingAccountsToCache([updated])
+    await this.sendAccountToCache.sendingAccountsToCache([updated]);
   }
 
   async processWithdraw({ from, value }: CreateWithdrawDto) {
-    const account = await this.checkAccountUtils.checkIfAccountExistsByNumber(from);
+    const account =
+      await this.checkAccountUtils.checkIfAccountExistsByNumber(from);
 
     if (!account) {
       throw new HttpException('Account not found.', HttpStatus.NOT_FOUND);
@@ -56,42 +61,59 @@ export class TransactionsMicroservice {
 
     const newBalance = account.balance - value;
 
-    const updated = await this.accountRepository.updateBalance(cuid, newBalance);
+    const updated = await this.accountRepository.updateBalance(
+      cuid,
+      newBalance,
+    );
     await this.createTransaction({
       type: 'WITHDRAW',
       cuid,
       value,
     });
 
-    await this.sendAccountToCache.sendingAccountsToCache([updated])
+    await this.sendAccountToCache.sendingAccountsToCache([updated]);
   }
 
   async processTransfer({ from, to, value }: CreateTransferDto) {
-    const accountFrom = await this.checkAccountUtils.checkIfAccountExistsByNumber(from);
-    const accountTo = await this.checkAccountUtils.checkIfAccountExistsByNumber(to);
+    const accountFrom =
+      await this.checkAccountUtils.checkIfAccountExistsByNumber(from);
+    const accountTo =
+      await this.checkAccountUtils.checkIfAccountExistsByNumber(to);
 
     if (!accountFrom) {
-      throw new HttpException('Origin account not found.', HttpStatus.NOT_FOUND);
+      throw new HttpException(
+        'Origin account not found.',
+        HttpStatus.NOT_FOUND,
+      );
     }
 
     if (!accountTo) {
-      throw new HttpException('Destiny account not found.', HttpStatus.NOT_FOUND);
+      throw new HttpException(
+        'Destiny account not found.',
+        HttpStatus.NOT_FOUND,
+      );
     }
 
     const origin = {
       cuid: accountFrom.cuid,
       balance: accountFrom.balance,
       value: value,
-    }
+    };
 
     const destiny = {
       cuid: accountTo.cuid,
       balance: accountTo.balance,
       value: value,
-    }
+    };
 
-    const updatedFrom = await this.accountRepository.updateBalance(origin.cuid, origin.balance - value);
-    const updatedTo = await this.accountRepository.updateBalance(destiny.cuid, destiny.balance + value);
+    const updatedFrom = await this.accountRepository.updateBalance(
+      origin.cuid,
+      origin.balance - value,
+    );
+    const updatedTo = await this.accountRepository.updateBalance(
+      destiny.cuid,
+      destiny.balance + value,
+    );
 
     await this.createTransaction({
       type: 'TRANSFER',
@@ -100,7 +122,10 @@ export class TransactionsMicroservice {
       value,
     });
 
-    await this.sendAccountToCache.sendingAccountsToCache([updatedFrom, updatedTo])
+    await this.sendAccountToCache.sendingAccountsToCache([
+      updatedFrom,
+      updatedTo,
+    ]);
   }
 
   async createTransaction({ type, cuid, to, value }: CreateTransactionDto) {
@@ -111,6 +136,6 @@ export class TransactionsMicroservice {
       value,
     });
 
-    return transaction
+    return transaction;
   }
 }

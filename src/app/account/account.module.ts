@@ -19,4 +19,4 @@ import { AccountsToCacheUtils } from '../utils/accounts-to-cache.utils';
     AccountsToCacheUtils,
   ],
 })
-export class AccountModule { }
+export class AccountModule {}

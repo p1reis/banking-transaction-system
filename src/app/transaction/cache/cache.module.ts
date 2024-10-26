@@ -23,4 +23,4 @@ import { redisStore } from 'cache-manager-redis-yet';
   ],
   exports: [CacheModule],
 })
-export class CustomCacheModule { }
+export class CustomCacheModule {}

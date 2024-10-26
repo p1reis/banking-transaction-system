@@ -21,13 +21,17 @@ import { TransferProcessor } from './processors/transfer.processor';
         port: Number(process.env.REDIS_PORT),
       },
     }),
-    BullModule.registerQueue({
-      name: 'deposit',
-    }, {
-      name: 'withdraw',
-    }, {
-      name: 'transfer',
-    }),
+    BullModule.registerQueue(
+      {
+        name: 'deposit',
+      },
+      {
+        name: 'withdraw',
+      },
+      {
+        name: 'transfer',
+      },
+    ),
     CustomCacheModule,
   ],
   providers: [
@@ -42,8 +46,7 @@ import { TransferProcessor } from './processors/transfer.processor';
     TransactionRepository,
     CheckAccountUtils,
     AccountsToCacheUtils,
-
   ],
   exports: [BullModule],
 })
-export class QueueModule { }
+export class QueueModule {}

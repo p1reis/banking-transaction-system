@@ -10,7 +10,7 @@ export class CheckAccountUtils {
   constructor(
     @Inject(CACHE_MANAGER) private cacheManager: Cache,
     private readonly accountRepository: AccountRepository,
-  ) { }
+  ) {}
 
   async checkIfAccountExistsByName({ firstName, lastName }): Promise<Account> {
     const accountsInCache = await this.cacheManager.get<string>(`accounts`);
@@ -41,8 +41,7 @@ export class CheckAccountUtils {
       const accounts = JSON.parse(accountsInCache);
 
       const account = accounts.find(
-        (acc: { number: string }) =>
-          acc.number === number,
+        (acc: { number: string }) => acc.number === number,
       );
 
       return account ? account : null;
@@ -51,6 +50,5 @@ export class CheckAccountUtils {
     const accountInDatabase = await this.accountRepository.findUnique(number);
 
     return accountsInCache ? accountInDatabase : null;
-
   }
 }

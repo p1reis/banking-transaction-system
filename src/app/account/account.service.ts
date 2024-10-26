@@ -1,4 +1,4 @@
-import { HttpException, HttpStatus, Inject, Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 
 import { AccountRepository } from '@/src/domain/repositories/account.repository';
 
@@ -18,7 +18,7 @@ export class AccountService {
     private readonly generateAccountNumber: GenerateAccountNumberUtils,
     private readonly checkAccountUtils: CheckAccountUtils,
     private readonly sendAccountsToCache: AccountsToCacheUtils,
-  ) { }
+  ) {}
 
   async createAccount({
     firstName,
@@ -26,10 +26,11 @@ export class AccountService {
     balance,
   }: CreateAccountDto): Promise<CreateAccountMapped> {
     try {
-      const accountExists = await this.checkAccountUtils.checkIfAccountExistsByName({
-        firstName,
-        lastName,
-      });
+      const accountExists =
+        await this.checkAccountUtils.checkIfAccountExistsByName({
+          firstName,
+          lastName,
+        });
 
       if (accountExists) {
         throw new HttpException(
@@ -65,12 +66,13 @@ export class AccountService {
   }
 
   findAllAccounts() {
-    console.log('all accounts')
+    console.log('all accounts');
     return `This action returns all account`;
   }
 
   async findOneAccount(number: string) {
-    const accountIsInCache = await this.checkAccountUtils.checkIfAccountExistsByNumber(number)
+    const accountIsInCache =
+      await this.checkAccountUtils.checkIfAccountExistsByNumber(number);
     const accountInDatabase = await this.accountRepository.findUnique(number);
 
     if (accountIsInCache) {
