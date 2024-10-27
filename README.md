@@ -142,18 +142,16 @@ Antes de iniciar a aplicação, você pode precisar executar as migrations para 
     Primeiro, você precisa acessar o contêiner da aplicação que foi criado. Execute o seguinte comando:
 
     ```bash
-    $ docker exec -it <nome_do_container> sh
+    $ docker exec -it application sh
     ```
-    Substitua `<nome_do_container>` pelo nome do contêiner da aplicação (você pode verificar o nome com `docker ps`).
 
 2. **Executar as migrations**:
 
     Dentro do contêiner, execute o comando para rodar as migrations. O comando pode variar dependendo da sua configuração, mas geralmente será algo como:
 
     ```bash
-    $ pnpm run migrate deploy
+    $ pnpm exec prisma migrate deploy
     ```
-    Substitua `<nome_do_container>` pelo nome do contêiner da aplicação (você pode verificar o nome com `docker ps`).
 
 3. **Verificar o status das migrations**:
 
