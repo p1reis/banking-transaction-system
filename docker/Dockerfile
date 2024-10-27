@@ -25,5 +25,8 @@ COPY ./src ./src
 # Generate Prisma client
 RUN pnpm exec prisma generate
 
+# Build project
+RUN pnpm run build
+
 # Run the application
-CMD ["pnpm", "start"]
+CMD ["pnpm", "run", "start"]

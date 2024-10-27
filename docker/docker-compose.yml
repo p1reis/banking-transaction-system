@@ -30,6 +30,9 @@ services:
       - application:/var/lib/application/data
     ports:
       - 4000:4000
+    depends_on:
+      - postgres
+      - redis
 
 volumes:
   postgres:
