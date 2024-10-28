@@ -96,7 +96,7 @@ POSTGRES_TZ=
 POSTGRES_SCHEMA=
 
 # Database connection:
-DATABASE_URL=
+DATABASE_URL=postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@postgres:${POSTGRES_PORT}/${POSTGRES_DB}?schema=${POSTGRES_SCHEMA}&options=-c%20timezone=${POSTGRES_TZ}
 
 # Port application:
 PORT=
@@ -161,12 +161,19 @@ Antes de iniciar a aplicação, você pode precisar executar as migrations para 
 
     Para sair do contêiner, basta digitar `exit`.
 
-### Observação:
-  Se você encontrar erros durante a execução das migrations, verifique as mensagens de erro no terminal. Alguns problemas comuns incluem:
+> [!NOTE]
+> Se você encontrar erros durante a execução das migrations, verifique as mensagens de erro no terminal. Alguns problemas comuns incluem:
+>
+>  - **Conexão com o banco de dados**: Certifique-se de que o contêiner do banco de dados esteja em execução e que as variáveis de ambiente estão corretas.
+>
+>  - **Configurações do arquivo `.env`**: Verifique se todas as variáveis necessárias estão preenchidas corretamente.
 
-  - **Conexão com o banco de dados**: Certifique-se de que o contêiner do banco de dados esteja em execução e que as variáveis de ambiente estão corretas.
+### 7. Fazendo requisições:
 
-  - **Configurações do arquivo `.env`**: Verifique se todas as variáveis necessárias estão preenchidas corretamente.
+Acesse a coleção no Postman para realizar requisições.
+
+[<img src="https://run.pstmn.io/button.svg" alt="Run In Postman" style="width: 128px; height: 32px;">](https://app.getpostman.com/run-collection/34772834-5c7448a7-427a-411c-81c1-b32dfdaaaf65?action=collection%2Ffork&source=rip_markdown&collection-url=entityId%3D34772834-5c7448a7-427a-411c-81c1-b32dfdaaaf65%26entityType%3Dcollection%26workspaceId%3D87b6bccf-117c-4c91-ad20-c9c9f5938958)
+
 
 ## 🐛 **Testes Automatizados com Jest**
 
@@ -196,13 +203,15 @@ Este projeto não inclui testes end-to-end.
 
 ## 🚀 Roadmap de Melhorias
 
-- Implementação de testes de estresse e carga para avaliar a durabilidade, capacidade de processamento de requisições simultâneas e integridade do sistema sob condições extremas.
+- [ ] Implementação de WebSockets para fornecer feedback em tempo real sobre transações e status de jobs, melhorando a experiência do usuário e a eficiência da comunicação;
 
-- Implementação de scripts para validação da tabela verdade proposta, assegurando a precisão das operações lógicas no sistema;
+- [ ] Implementação de testes de estresse e carga para avaliar a durabilidade, capacidade de processamento de requisições simultâneas e integridade do sistema sob condições extremas.
 
-- Revisão da estrutura de dados para melhor desempenho e escalabilidade.
+- [ ] Implementação de scripts para validação da tabela verdade proposta, assegurando a precisão das operações lógicas no sistema;
 
-- Implementação de rotas de consulta a informações detalhadas de contas bancárias;
+- [ ] Revisão da estrutura de dados para melhor desempenho e escalabilidade.
+
+- [ ] Implementação de rotas de consulta a informações detalhadas de contas bancárias;
 
 ## 🫱🏾‍🫲🏾 Contato
 
