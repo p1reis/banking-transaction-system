@@ -135,7 +135,7 @@ $ pnpm run start:prod
 
 ### 6. Executar Migrations:
 
-Antes de iniciar a aplicação, você pode precisar executar as migrations para configurar o banco de dados corretamente. Siga os passos abaixo:
+Após iniciar a aplicação, você pode precisar executar as migrations para configurar o banco de dados corretamente. Siga os passos abaixo:
 
 1. **Acesse o contêiner da aplicação**:
 
