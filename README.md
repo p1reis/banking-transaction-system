@@ -201,17 +201,32 @@ Este projeto não inclui testes end-to-end.
 - `PostgreSQL`
 - `Docker`
 
-## 🚀 Roadmap de Melhorias
+## 🚀 # Roadmap de Melhorias
 
-- [ ] Implementação de WebSockets para fornecer feedback em tempo real sobre transações e status de jobs, melhorando a experiência do usuário e a eficiência da comunicação;
+- [ ] Implementação de Transações no Banco de Dados
+  - Garantir a integridade das operações financeiras usando transações.
 
-- [ ] Implementação de testes de estresse e carga para avaliar a durabilidade, capacidade de processamento de requisições simultâneas e integridade do sistema sob condições extremas.
+- [ ] Validação de Dados
+  - Aumentar a segurança e a robustez do sistema com validações rigorosas na entrada de dados.
 
-- [ ] Implementação de scripts para validação da tabela verdade proposta, assegurando a precisão das operações lógicas no sistema;
+- [ ] Tratamento e Mensagens de Erro
+  - Implementar um sistema de tratamento de erros com mensagens claras para melhorar a experiência do usuário e facilitar a depuração.
 
-- [ ] Revisão da estrutura de dados para melhor desempenho e escalabilidade.
+- [ ] Implementação de WebSockets
+  - Fornecer feedback em tempo real sobre transações e status de jobs, melhorando a comunicação com o usuário.
 
-- [ ] Implementação de rotas de consulta a informações detalhadas de contas bancárias;
+- [ ] Implementação de Testes de Estresse e Carga
+  - Avaliar a durabilidade e capacidade de processamento do sistema sob condições extremas.
+
+- [ ] Revisão da Estrutura de Dados
+  - Otimizar a estrutura de dados para melhor desempenho e escalabilidade.
+
+- [ ] Implementação de Scripts para Validação da Tabela Verdade
+  - Assegurar a precisão das operações lógicas no sistema, integrando scripts aos testes automatizados.
+
+- [ ] Implementação de Rotas de Consulta a Informações Detalhadas de Contas Bancárias
+  - Criar rotas otimizadas para que os usuários possam acessar informações detalhadas sobre suas contas.
+
 
 ## 🫱🏾‍🫲🏾 Contato
 
