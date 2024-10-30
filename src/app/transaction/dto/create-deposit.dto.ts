@@ -8,7 +8,7 @@ import {
 import { TransactionTypeEnum } from '@prisma/client';
 
 export class CreateDepositDto {
-  @IsEnum(TransactionTypeEnum)
+  @IsEnum(TransactionTypeEnum, { message: `Transaction type must be DEPOSIT` })
   @IsNotEmpty({ message: `Transaction type must be DEPOSIT` })
   type: TransactionTypeEnum;
 
