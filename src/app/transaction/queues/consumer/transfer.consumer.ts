@@ -8,29 +8,22 @@ import {
   Process,
   Processor,
 } from '@nestjs/bull';
-import { TransactionTypeEnum } from '@prisma/client';
 
-import { TransactionsMicroservice } from '../../microservices/transactions.microservice';
+import { TransferService } from '../../services/transfer.service';
 import { HttpStatus, Logger } from '@nestjs/common';
-
-interface genericJob {
-  type: TransactionTypeEnum;
-  from: string;
-  to: string;
-  value: number;
-}
+import { GenericJob } from '@/src/domain/interfaces/genericJob.interface';
 
 @Processor('transfer')
 export class TransferConsumer {
   constructor(
-    private readonly transactionMicroService: TransactionsMicroservice,
+    private readonly transferService: TransferService,
     @InjectQueue('transfer') private transferQueue: Queue,
-  ) {}
+  ) { }
 
   @Process('transfer')
-  async execute(job: Job<genericJob>) {
+  async execute(job: Job<GenericJob>) {
     const { type, from, to, value } = job.data;
-    await this.transactionMicroService.processTransfer({
+    await this.transferService.execute({
       type,
       from,
       to,

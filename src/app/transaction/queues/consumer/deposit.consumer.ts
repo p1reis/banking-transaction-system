@@ -8,29 +8,22 @@ import {
   Process,
   Processor,
 } from '@nestjs/bull';
-import { TransactionTypeEnum } from '@prisma/client';
 
-import { TransactionsMicroservice } from '../../microservices/transactions.microservice';
+import { DepositService } from '../../services/deposit.service';
 import { HttpStatus, Logger } from '@nestjs/common';
-
-interface genericJob {
-  type: TransactionTypeEnum;
-  from: string;
-  to: string;
-  value: number;
-}
+import { GenericJob } from '@/src/domain/interfaces/genericJob.interface';
 
 @Processor('deposit')
 export class DepositConsumer {
   constructor(
-    private readonly transactionMicroService: TransactionsMicroservice,
+    private readonly depositService: DepositService,
     @InjectQueue('deposit') private depositQueue: Queue,
-  ) {}
+  ) { }
 
   @Process('deposit')
-  async execute(job: Job<genericJob>) {
+  async execute(job: Job<GenericJob>) {
     const { type, from, value } = job.data;
-    await this.transactionMicroService.processDeposit({
+    await this.depositService.execute({
       type,
       from,
       value,
@@ -51,7 +44,7 @@ export class DepositConsumer {
 
     if (jobsNumber == 0 && jobsActive == 0) {
       await this.depositQueue.empty();
-      Logger.log(`Queue is already completed.`);
+      Logger.log(`Job is already completed.`);
     }
   }
 

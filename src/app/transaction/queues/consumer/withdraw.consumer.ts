@@ -8,29 +8,22 @@ import {
   Process,
   Processor,
 } from '@nestjs/bull';
-import { TransactionTypeEnum } from '@prisma/client';
 
-import { TransactionsMicroservice } from '../../microservices/transactions.microservice';
+import { WithdrawService } from '../../services/withdraw.service';
 import { HttpStatus, Logger } from '@nestjs/common';
-
-interface genericJob {
-  type: TransactionTypeEnum;
-  from: string;
-  to: string;
-  value: number;
-}
+import { GenericJob } from '@/src/domain/interfaces/genericJob.interface';
 
 @Processor('withdraw')
 export class WithdrawConsumer {
   constructor(
-    private readonly transactionMicroService: TransactionsMicroservice,
+    private readonly withdrawService: WithdrawService,
     @InjectQueue('withdraw') private withdrawQueue: Queue,
-  ) {}
+  ) { }
 
   @Process('withdraw')
-  async execute(job: Job<genericJob>) {
+  async execute(job: Job<GenericJob>) {
     const { type, from, value } = job.data;
-    await this.transactionMicroService.processWithdraw({
+    await this.withdrawService.execute({
       type,
       from,
       value,

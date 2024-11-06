@@ -5,7 +5,7 @@ import { AccountRepository } from '@/src/domain/repositories/account.repository'
 import { CreateAccountMapped } from '@/src/domain/interfaces/accountMapped.interface';
 import { GenerateAccountNumberUtils } from '@/src/shared/utils/generate-account-number';
 
-import { AccountMapper } from '../mappers/account.mapper';
+import { AccountMapper } from './mappers/account.mapper';
 import { CreateAccountDto } from './dto/create-account.dto';
 import { UpdateAccountDto } from './dto/update-account.dto';
 import { CheckAccountUtils } from '../utils/check-account.utils';
@@ -18,7 +18,7 @@ export class AccountService {
     private readonly generateAccountNumber: GenerateAccountNumberUtils,
     private readonly checkAccountUtils: CheckAccountUtils,
     private readonly sendAccountsToCache: AccountsToCacheUtils,
-  ) {}
+  ) { }
 
   async createAccount({
     firstName,
