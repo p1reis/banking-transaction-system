@@ -6,7 +6,7 @@ import { CreateTransactionService } from './create-transaction.service';
 import { CreateTransferDto } from '../dto/create-transfer.dto';
 import { CheckAccountUtils } from '../../utils/check-account.utils';
 import { AccountsToCacheUtils } from '../../utils/accounts-to-cache.utils';
-import { TransferMapper } from '../../mappers/transaction.mapper';
+import { TransferMapper } from '../mappers/transaction.mapper';
 
 export class TransferService {
   constructor(

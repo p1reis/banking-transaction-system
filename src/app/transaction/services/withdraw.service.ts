@@ -6,7 +6,7 @@ import { CreateTransactionService } from './create-transaction.service';
 import { CreateWithdrawDto } from '../dto/create-withdraw.dto';
 import { CheckAccountUtils } from '../../utils/check-account.utils';
 import { AccountsToCacheUtils } from '../../utils/accounts-to-cache.utils';
-import { WithdrawMapper } from '../../mappers/transaction.mapper';
+import { WithdrawMapper } from '../mappers/transaction.mapper';
 
 export class WithdrawService {
   constructor(
