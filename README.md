@@ -18,15 +18,17 @@ A API é projetada para garantir a integridade do saldo das contas em todas as o
 
 - [Funcionalidades](#-funcionalidades)
 - [Executando a aplicação](#%EF%B8%8Fexecutando-a-aplicação)
-  - [Clonar o repositório](#1-clonar-o-repositório-e-navegar-para-a-pasta-backend)
-  - [Instalar dependências](#2-instalar-dependências)
-  - [Definir suas variáveis de ambiente](#3-definir-suas-variáveis-de-ambiente)
-  - [Configurar os containers](#4-configurar-os-containers)
-  - [Iniciar a aplicação](#5-iniciar-a-aplicação)
+  - [Clone o repositório](#1--clone-o-repositório-e-navegue-até-a-pasta-backend)
+  - [Instale dependências](#2-instale-as-dependências)
+  - [Configure suas variáveis de ambiente](#3-configure-suas-variáveis-de-ambiente)
+  - [Configure os containers](#4-configure-os-contêineres)
+  - [Inicie a aplicação](#5-inicie-a-aplicação)
+  - [Executar Migrations](#6-executar-migrations)
+  - [Fazendo requisições](#7-fazendo-requisições)
 - [Testes automatizados com Jest](#-testes-automatizados-com-jest)
-- [Tecnologias utilizadas](#%EF%B8%8Ftecnologias-utilizadas)
-- [Roadmap de melhorias](#%EF%B8%8Froadmap-de-melhorias)
-- [Fique em contato](#-fique-em-contato)
+- [Tecnologias utilizadas](#%EF%B8%8F-tecnologias-utilizadas)
+- [Roadmap de melhorias](#-roadmap-de-melhorias)
+- [Contato](#-contato)
 - [Licença](#-licença)
 
 
@@ -201,7 +203,7 @@ Este projeto não inclui testes end-to-end.
 - `PostgreSQL`
 - `Docker`
 
-## 🚀 # Roadmap de Melhorias
+## 🚀 Roadmap de Melhorias
 
 Todas as tarefas, issues e progresso do projeto está sendo mapeado no Github Projects. 
 
