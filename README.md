@@ -18,15 +18,17 @@ A API é projetada para garantir a integridade do saldo das contas em todas as o
 
 - [Funcionalidades](#-funcionalidades)
 - [Executando a aplicação](#%EF%B8%8Fexecutando-a-aplicação)
-  - [Clonar o repositório](#1-clonar-o-repositório-e-navegar-para-a-pasta-backend)
-  - [Instalar dependências](#2-instalar-dependências)
-  - [Definir suas variáveis de ambiente](#3-definir-suas-variáveis-de-ambiente)
-  - [Configurar os containers](#4-configurar-os-containers)
-  - [Iniciar a aplicação](#5-iniciar-a-aplicação)
+  - [Clone o repositório](#1--clone-o-repositório-e-navegue-até-a-pasta-backend)
+  - [Instale dependências](#2-instale-as-dependências)
+  - [Configure suas variáveis de ambiente](#3-configure-suas-variáveis-de-ambiente)
+  - [Configure os containers](#4-configure-os-contêineres)
+  - [Inicie a aplicação](#5-inicie-a-aplicação)
+  - [Executar Migrations](#6-executar-migrations)
+  - [Fazendo requisições](#7-fazendo-requisições)
 - [Testes automatizados com Jest](#-testes-automatizados-com-jest)
-- [Tecnologias utilizadas](#%EF%B8%8Ftecnologias-utilizadas)
-- [Roadmap de melhorias](#%EF%B8%8Froadmap-de-melhorias)
-- [Fique em contato](#-fique-em-contato)
+- [Tecnologias utilizadas](#%EF%B8%8F-tecnologias-utilizadas)
+- [Roadmap de melhorias](#-roadmap-de-melhorias)
+- [Contato](#-contato)
 - [Licença](#-licença)
 
 
@@ -201,31 +203,11 @@ Este projeto não inclui testes end-to-end.
 - `PostgreSQL`
 - `Docker`
 
-## 🚀 # Roadmap de Melhorias
+## 🚀 Roadmap de Melhorias
 
-- [ ] Implementação de Transações no Banco de Dados
-  - Garantir a integridade das operações financeiras usando transações.
+Todas as tarefas, issues e progresso do projeto está sendo mapeado no Github Projects. 
 
-- [ ] Validação de Dados
-  - Aumentar a segurança e a robustez do sistema com validações rigorosas na entrada de dados.
-
-- [ ] Tratamento e Mensagens de Erro
-  - Implementar um sistema de tratamento de erros com mensagens claras para melhorar a experiência do usuário e facilitar a depuração.
-
-- [ ] Implementação de WebSockets
-  - Fornecer feedback em tempo real sobre transações e status de jobs, melhorando a comunicação com o usuário.
-
-- [ ] Implementação de Testes de Estresse e Carga
-  - Avaliar a durabilidade e capacidade de processamento do sistema sob condições extremas.
-
-- [ ] Revisão da Estrutura de Dados
-  - Otimizar a estrutura de dados para melhor desempenho e escalabilidade.
-
-- [ ] Implementação de Scripts para Validação da Tabela Verdade
-  - Assegurar a precisão das operações lógicas no sistema, integrando scripts aos testes automatizados.
-
-- [ ] Implementação de Rotas de Consulta a Informações Detalhadas de Contas Bancárias
-  - Criar rotas otimizadas para que os usuários possam acessar informações detalhadas sobre suas contas.
+Acesse: [Sistema de Transações Bancárias](https://github.com/users/p1reis/projects/1)
 
 
 ## 🫱🏾‍🫲🏾 Contato
