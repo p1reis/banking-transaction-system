@@ -203,29 +203,9 @@ Este projeto não inclui testes end-to-end.
 
 ## 🚀 # Roadmap de Melhorias
 
-- [ ] Implementação de Transações no Banco de Dados
-  - Garantir a integridade das operações financeiras usando transações.
+Todas as tarefas, issues e progresso do projeto está sendo mapeado no Github Projects. 
 
-- [ ] Validação de Dados
-  - Aumentar a segurança e a robustez do sistema com validações rigorosas na entrada de dados.
-
-- [ ] Tratamento e Mensagens de Erro
-  - Implementar um sistema de tratamento de erros com mensagens claras para melhorar a experiência do usuário e facilitar a depuração.
-
-- [ ] Implementação de WebSockets
-  - Fornecer feedback em tempo real sobre transações e status de jobs, melhorando a comunicação com o usuário.
-
-- [ ] Implementação de Testes de Estresse e Carga
-  - Avaliar a durabilidade e capacidade de processamento do sistema sob condições extremas.
-
-- [ ] Revisão da Estrutura de Dados
-  - Otimizar a estrutura de dados para melhor desempenho e escalabilidade.
-
-- [ ] Implementação de Scripts para Validação da Tabela Verdade
-  - Assegurar a precisão das operações lógicas no sistema, integrando scripts aos testes automatizados.
-
-- [ ] Implementação de Rotas de Consulta a Informações Detalhadas de Contas Bancárias
-  - Criar rotas otimizadas para que os usuários possam acessar informações detalhadas sobre suas contas.
+Acesse: [Sistema de Transações Bancárias](https://github.com/users/p1reis/projects/1)
 
 
 ## 🫱🏾‍🫲🏾 Contato
