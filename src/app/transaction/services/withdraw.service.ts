@@ -17,23 +17,21 @@ export class WithdrawService {
   ) { }
 
   async execute({ from, value }: CreateWithdrawDto) {
-    const account =
+    const { cuid, balance } =
       await this.checkAccountUtils.checkIfAccountExistsByNumber(from);
 
-    if (!account) {
+    if (!cuid) {
       throw new HttpException('Account not found.', HttpStatus.NOT_FOUND);
     }
 
-    if (account.balance < value) {
+    if (balance < value) {
       throw new HttpException(
         'Your balance is not enough to proceed.',
         HttpStatus.BAD_REQUEST,
       );
     }
 
-    const cuid = account.cuid;
-
-    const newBalance = account.balance - value;
+    const newBalance = balance - value;
 
     const updated = await this.accountRepository.updateBalance(
       cuid,

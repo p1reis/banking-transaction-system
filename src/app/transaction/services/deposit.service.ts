@@ -17,15 +17,14 @@ export class DepositService {
   ) { }
 
   async execute({ from, value }: CreateDepositDto) {
-    const account =
+    const { cuid, balance } =
       await this.checkAccountUtils.checkIfAccountExistsByNumber(from);
 
-    if (!account) {
+    if (!cuid) {
       throw new HttpException('Account not found.', HttpStatus.NOT_FOUND);
     }
-    const cuid = account.cuid;
 
-    const newBalance = account.balance + value;
+    const newBalance = balance + value;
 
     const updated = await this.accountRepository.updateBalance(
       cuid,
