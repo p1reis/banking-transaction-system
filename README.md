@@ -65,13 +65,13 @@ Siga os passos abaixo:
 #### Clonando usando a URL da web.
 
 ```bash
-$ git clone https://github.com/p1reis/test-backend-grupo-primo.git && cd test-backend-grupo-primo
+$ git clone https://github.com/p1reis/banking-transaction-system.git && cd banking-transaction-system
 ```
 
 #### Usando uma chave SSH protegida por senha
 
 ```bash
-$ git clone git@github.com:p1reis/test-backend-grupo-primo.git && cd test-backend-grupo-primo
+$ git clone git@github.com:p1reis/banking-transaction-system.git && cd banking-transaction-system
 ```
 
 ### 2. Instale as dependências:
