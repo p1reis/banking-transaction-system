@@ -1,7 +1,7 @@
 {
   "name": "backend",
   "version": "0.0.1",
-  "description": "Sistema de Transações Bancárias com Concorrência de Saldo - Grupo Primo",
+  "description": "Sistema de Transações Bancárias com Concorrência de Saldo",
   "author": "Pedro Reis <contatodopedroreis@gmail.com>",
   "private": true,
   "license": "MIT",

@@ -1,5 +1,4 @@
-name: grupo-primo
-
+name: banking-system
 services:
   postgres:
     image: postgres:alpine3.20
