@@ -1,10 +1,8 @@
 <p align="center">
-  <h1>Sistema de Transações Bancárias com Concorrência de Saldo - Grupo Primo</h1>
+  <h1>Sistema de Transações Bancárias com Concorrência de Saldo</h1>
 </p>
 
 ## 🎯 **Descrição do projeto**
-
-O projeto consiste em um teste de Backend para o Grupo Primo.
 
 Este projeto tem como objetivo desenvolver uma API para um sistema de transações bancárias, capaz de gerenciar múltiplas transações concorrentes de forma eficiente e segura.
 
