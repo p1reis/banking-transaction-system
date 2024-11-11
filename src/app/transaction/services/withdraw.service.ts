@@ -15,7 +15,7 @@ export class WithdrawService {
     private readonly sendAccountToCache: AccountsToCacheUtils,
   ) { }
 
-  async execute({ origin, value }: CreateWithdrawDto) {
+  async execute({ origin, amount }: CreateWithdrawDto) {
     const { cuid, balance } =
       await this.checkAccountUtils.checkIfAccountExistsByNumber(origin);
 
@@ -26,14 +26,14 @@ export class WithdrawService {
       );
     }
 
-    if (value < 0) {
+    if (amount < 0) {
       throw new HttpException(
         'Amount value must be positive.',
         HttpStatus.NOT_FOUND,
       );
     }
 
-    if (balance < value) {
+    if (balance < amount) {
       throw new HttpException(
         'Your balance is not enough to proceed.',
         HttpStatus.BAD_REQUEST,
@@ -42,7 +42,7 @@ export class WithdrawService {
 
     const withdraw = await this.transactionRepository.processWithdraw(
       cuid,
-      value,
+      amount,
     );
 
     await this.sendAccountToCache.sendingAccountsToCache([withdraw[0]]);

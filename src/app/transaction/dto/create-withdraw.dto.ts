@@ -20,7 +20,7 @@ export class CreateWithdrawDto {
   @IsNotEmpty()
   @IsNumber(
     { maxDecimalPlaces: 2 },
-    { message: 'Value field must be a decimal number' },
+    { message: `"Amount" field must be a decimal number` },
   )
-  value: number;
+  amount: number;
 }

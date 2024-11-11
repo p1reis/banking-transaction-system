@@ -22,12 +22,12 @@ export class TransferConsumer {
 
   @Process('transfer')
   async execute(job: Job<TransferJob>) {
-    const { type, origin, destiny, value } = job.data;
+    const { type, origin, destiny, amount } = job.data;
     await this.transferService.execute({
       type,
       origin,
       destiny,
-      value,
+      amount,
     });
   }
 

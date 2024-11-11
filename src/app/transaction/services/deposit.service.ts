@@ -15,7 +15,7 @@ export class DepositService {
     private readonly sendAccountToCache: AccountsToCacheUtils
   ) { }
 
-  async execute({ destiny, value }: CreateDepositDto) {
+  async execute({ destiny, amount }: CreateDepositDto) {
     const { cuid } =
       await this.checkAccountUtils.checkIfAccountExistsByNumber(destiny);
 
@@ -26,16 +26,16 @@ export class DepositService {
       );
     }
 
-    if (value < 0) {
+    if (amount < 0) {
       throw new HttpException(
-        'Amount value must be positive.',
+        'Amount amount must be positive.',
         HttpStatus.NOT_FOUND,
       );
     }
 
     const deposit = await this.transactionRepository.processDeposit(
       cuid,
-      value,
+      amount,
     );
 
     await this.sendAccountToCache.sendingAccountsToCache([deposit[0]]);

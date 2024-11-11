@@ -7,7 +7,7 @@ import { CreateWithdrawDto } from '../../dto/create-withdraw.dto';
 export class WithdrawProcessor {
   constructor(@InjectQueue('withdraw') private withdrawQueue: Queue) { }
 
-  async execute({ type, origin, value }: CreateWithdrawDto) {
-    await this.withdrawQueue.add('withdraw', { type, origin, value });
+  async execute({ type, origin, amount }: CreateWithdrawDto) {
+    await this.withdrawQueue.add('withdraw', { type, origin, amount });
   }
 }

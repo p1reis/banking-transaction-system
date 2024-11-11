@@ -22,11 +22,11 @@ export class WithdrawConsumer {
 
   @Process('withdraw')
   async execute(job: Job<WithdrawJob>) {
-    const { type, origin, value } = job.data;
+    const { type, origin, amount } = job.data;
     await this.withdrawService.execute({
       type,
       origin,
-      value,
+      amount,
     });
   }
 

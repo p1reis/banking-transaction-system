@@ -7,7 +7,7 @@ import { CreateDepositDto } from '../../dto/create-deposit.dto';
 export class DepositProcessor {
   constructor(@InjectQueue('deposit') private depositQueue: Queue) { }
 
-  async execute({ type, destiny, value }: CreateDepositDto) {
-    await this.depositQueue.add('deposit', { type, destiny, value });
+  async execute({ type, destiny, amount }: CreateDepositDto) {
+    await this.depositQueue.add('deposit', { type, destiny, amount });
   }
 }

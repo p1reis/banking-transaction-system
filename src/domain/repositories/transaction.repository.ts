@@ -14,12 +14,12 @@ export class TransactionRepository {
     return this.prisma.account;
   }
 
-  processDeposit(destiny: string, value: number) {
+  processDeposit(destiny: string, amount: number) {
     const deposit = this.account.update({
       where: { cuid: destiny },
       data: {
         balance: {
-          increment: value,
+          increment: amount,
         },
       },
     });
@@ -27,11 +27,11 @@ export class TransactionRepository {
     const transaction = this.transaction.create({
       data: {
         type: 'DEPOSIT',
-        accountFrom: { connect: { cuid: destiny } },
-        value
+        accountOrigin: { connect: { cuid: destiny } },
+        amount
       },
       include: {
-        accountFrom: {
+        accountOrigin: {
           select: {
             firstName: true,
             lastName: true,
@@ -45,12 +45,12 @@ export class TransactionRepository {
     return this.prisma.$transaction([deposit, transaction]);
   }
 
-  processWithdraw(from: string, value: number) {
+  processWithdraw(from: string, amount: number) {
     const withdraw = this.account.update({
       where: { cuid: from },
       data: {
         balance: {
-          decrement: value,
+          decrement: amount,
         },
       },
     });
@@ -58,11 +58,11 @@ export class TransactionRepository {
     const transaction = this.transaction.create({
       data: {
         type: 'WITHDRAW',
-        accountFrom: { connect: { cuid: from } },
-        value
+        accountOrigin: { connect: { cuid: from } },
+        amount
       },
       include: {
-        accountFrom: {
+        accountOrigin: {
           select: {
             firstName: true,
             lastName: true,
@@ -76,12 +76,12 @@ export class TransactionRepository {
     return this.prisma.$transaction([withdraw, transaction]);
   }
 
-  processTransfer(origin: string, destiny: string, value: number) {
+  processTransfer(origin: string, destiny: string, amount: number) {
     const updatedOrigin = this.account.update({
       where: { cuid: origin },
       data: {
         balance: {
-          decrement: value,
+          decrement: amount,
         },
       },
     });
@@ -90,7 +90,7 @@ export class TransactionRepository {
       where: { cuid: destiny },
       data: {
         balance: {
-          increment: value,
+          increment: amount,
         },
       },
     });
@@ -98,12 +98,12 @@ export class TransactionRepository {
     const transaction = this.transaction.create({
       data: {
         type: 'TRANSFER',
-        accountFrom: { connect: { cuid: origin } },
-        accountTo: { connect: { cuid: destiny } },
-        value
+        accountOrigin: { connect: { cuid: origin } },
+        accountDestiny: { connect: { cuid: destiny } },
+        amount
       },
       include: {
-        accountFrom: {
+        accountOrigin: {
           select: {
             firstName: true,
             lastName: true,
@@ -111,7 +111,7 @@ export class TransactionRepository {
             balance: true,
           },
         },
-        accountTo: {
+        accountDestiny: {
           select: {
             firstName: true,
             lastName: true,

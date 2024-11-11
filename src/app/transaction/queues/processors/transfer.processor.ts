@@ -7,7 +7,7 @@ import { CreateTransferDto } from '../../dto/create-transfer.dto';
 export class TransferProcessor {
   constructor(@InjectQueue('transfer') private transferQueue: Queue) { }
 
-  async execute({ type, origin, destiny, value }: CreateTransferDto) {
-    await this.transferQueue.add('transfer', { type, origin, destiny, value });
+  async execute({ type, origin, destiny, amount }: CreateTransferDto) {
+    await this.transferQueue.add('transfer', { type, origin, destiny, amount });
   }
 }

@@ -22,11 +22,11 @@ export class DepositConsumer {
 
   @Process('deposit')
   async execute(job: Job<DepositJob>) {
-    const { type, destiny, value } = job.data;
+    const { type, destiny, amount } = job.data;
     await this.depositService.execute({
       type,
       destiny,
-      value,
+      amount,
     });
   }
 

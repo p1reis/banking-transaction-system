@@ -14,7 +14,7 @@ export class TransferService {
     private readonly transactionRepository: TransactionRepository,
   ) { }
 
-  async execute({ origin, destiny, value }: CreateTransferDto) {
+  async execute({ origin, destiny, amount }: CreateTransferDto) {
     const { cuid: originCuid, balance: originBalance } =
       await this.checkAccountUtils.checkIfAccountExistsByNumber(origin);
     const { cuid: destinyCuid } =
@@ -34,14 +34,14 @@ export class TransferService {
       );
     }
 
-    if (originBalance < value) {
+    if (originBalance < amount) {
       throw new HttpException(
         'Insufficient balance in the origin account.',
         HttpStatus.BAD_REQUEST,
       );
     }
 
-    const transfer = await this.transactionRepository.processTransfer(originCuid, destinyCuid, value)
+    const transfer = await this.transactionRepository.processTransfer(originCuid, destinyCuid, amount)
 
     await this.sendAccountToCache.sendingAccountsToCache([
       transfer[0],
