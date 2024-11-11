@@ -1,74 +1,53 @@
-import { HttpException, HttpStatus } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 
-import { AccountRepository } from '@/src/domain/repositories/account.repository';
-
-import { CreateTransactionService } from './create-transaction.service';
 import { CreateTransferDto } from '../dto/create-transfer.dto';
 import { CheckAccountUtils } from '../../utils/check-account.utils';
 import { AccountsToCacheUtils } from '../../utils/accounts-to-cache.utils';
 import { TransferMapper } from '../mappers/transaction.mapper';
+import { TransactionRepository } from '@/src/domain/repositories/transaction.repository';
 
+@Injectable()
 export class TransferService {
   constructor(
-    private readonly accountRepository: AccountRepository,
     private readonly checkAccountUtils: CheckAccountUtils,
     private readonly sendAccountToCache: AccountsToCacheUtils,
-    private readonly createTransaction: CreateTransactionService,
+    private readonly transactionRepository: TransactionRepository,
   ) { }
 
-  async execute({ from, to, value }: CreateTransferDto) {
-    const accountFrom =
-      await this.checkAccountUtils.checkIfAccountExistsByNumber(from);
-    const accountTo =
-      await this.checkAccountUtils.checkIfAccountExistsByNumber(to);
+  async execute({ origin, destiny, value }: CreateTransferDto) {
+    const { cuid: originCuid, balance: originBalance } =
+      await this.checkAccountUtils.checkIfAccountExistsByNumber(origin);
+    const { cuid: destinyCuid } =
+      await this.checkAccountUtils.checkIfAccountExistsByNumber(destiny);
 
-    if (!accountFrom) {
+    if (!originCuid) {
       throw new HttpException(
         'Origin account not found.',
         HttpStatus.NOT_FOUND,
       );
     }
 
-    if (!accountTo) {
+    if (!destinyCuid) {
       throw new HttpException(
         'Destiny account not found.',
         HttpStatus.NOT_FOUND,
       );
     }
 
-    const origin = {
-      cuid: accountFrom.cuid,
-      balance: accountFrom.balance,
-      value: value,
-    };
+    if (originBalance < value) {
+      throw new HttpException(
+        'Insufficient balance in the origin account.',
+        HttpStatus.BAD_REQUEST,
+      );
+    }
 
-    const destiny = {
-      cuid: accountTo.cuid,
-      balance: accountTo.balance,
-      value: value,
-    };
-
-    const updatedFrom = await this.accountRepository.updateBalance(
-      origin.cuid,
-      origin.balance - value,
-    );
-    const updatedTo = await this.accountRepository.updateBalance(
-      destiny.cuid,
-      destiny.balance + value,
-    );
-
-    const transaction = await this.createTransaction.execute({
-      type: 'TRANSFER',
-      cuid: origin.cuid,
-      to: destiny.cuid,
-      value,
-    });
+    const transfer = await this.transactionRepository.processTransfer(originCuid, destinyCuid, value)
 
     await this.sendAccountToCache.sendingAccountsToCache([
-      updatedFrom,
-      updatedTo,
+      transfer[0],
+      transfer[1],
     ]);
 
-    return TransferMapper.map(transaction)
+    return TransferMapper.map(transfer[2])
   }
 }

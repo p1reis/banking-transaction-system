@@ -14,11 +14,11 @@ export class CreateTransferDto {
 
   @IsString()
   @IsNotEmpty({ message: `"From" field must be an valid account number` })
-  from: string;
+  origin: string;
 
   @IsString()
   @IsNotEmpty({ message: 'To field must be an valid account number' })
-  to: string;
+  destiny: string;
 
   @IsPositive()
   @IsNotEmpty()

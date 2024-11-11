@@ -13,8 +13,8 @@ export class CreateWithdrawDto {
   type: TransactionTypeEnum;
 
   @IsString()
-  @IsNotEmpty({ message: `"From" field must be an valid account number` })
-  from: string;
+  @IsNotEmpty({ message: `"Origin" field must be an valid account number` })
+  origin: string;
 
   @IsPositive()
   @IsNotEmpty()

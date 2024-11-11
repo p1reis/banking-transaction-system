@@ -1,42 +1,44 @@
-import { HttpException, HttpStatus } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 
-import { AccountRepository } from '@/src/domain/repositories/account.repository';
+import { TransactionRepository } from '@/src/domain/repositories/transaction.repository';
 
-import { CreateTransactionService } from './create-transaction.service';
 import { CreateDepositDto } from '../dto/create-deposit.dto';
 import { AccountsToCacheUtils } from '../../utils/accounts-to-cache.utils';
 import { CheckAccountUtils } from '../../utils/check-account.utils';
 import { DepositMapper } from '../mappers/transaction.mapper';
 
+@Injectable()
 export class DepositService {
   constructor(
-    private readonly accountRepository: AccountRepository,
+    private readonly transactionRepository: TransactionRepository,
     private readonly checkAccountUtils: CheckAccountUtils,
-    private readonly sendAccountToCache: AccountsToCacheUtils,
-    private readonly createTransaction: CreateTransactionService,
+    private readonly sendAccountToCache: AccountsToCacheUtils
   ) { }
 
-  async execute({ from, value }: CreateDepositDto) {
-    const { cuid, balance } =
-      await this.checkAccountUtils.checkIfAccountExistsByNumber(from);
+  async execute({ destiny, value }: CreateDepositDto) {
+    const { cuid } =
+      await this.checkAccountUtils.checkIfAccountExistsByNumber(destiny);
 
     if (!cuid) {
-      throw new HttpException('Account not found.', HttpStatus.NOT_FOUND);
+      throw new HttpException(
+        'Account not found.',
+        HttpStatus.NOT_FOUND,
+      );
     }
 
-    const newBalance = balance + value;
+    if (value < 0) {
+      throw new HttpException(
+        'Amount value must be positive.',
+        HttpStatus.NOT_FOUND,
+      );
+    }
 
-    const updated = await this.accountRepository.updateBalance(
-      cuid,
-      newBalance,
-    );
-    const transaction = await this.createTransaction.execute({
-      type: 'DEPOSIT',
+    const deposit = await this.transactionRepository.processDeposit(
       cuid,
       value,
-    });
+    );
 
-    await this.sendAccountToCache.sendingAccountsToCache([updated]);
-    return DepositMapper.map(transaction)
+    await this.sendAccountToCache.sendingAccountsToCache([deposit[0]]);
+    return DepositMapper.map(deposit[1])
   }
 }

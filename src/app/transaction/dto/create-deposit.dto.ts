@@ -13,8 +13,8 @@ export class CreateDepositDto {
   type: TransactionTypeEnum;
 
   @IsString()
-  @IsNotEmpty({ message: `"From" field must be an valid account number` })
-  from: string;
+  @IsNotEmpty({ message: `"Destiny" field must be an valid account number` })
+  destiny: string;
 
   @IsPositive()
   @IsNotEmpty()

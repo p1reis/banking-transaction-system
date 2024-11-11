@@ -11,7 +11,7 @@ import {
 
 import { WithdrawService } from '../../services/withdraw.service';
 import { HttpStatus, Logger } from '@nestjs/common';
-import { GenericJob } from '@/src/domain/interfaces/genericJob.interface';
+import { WithdrawJob } from '@/src/domain/interfaces/jobs.interface';
 
 @Processor('withdraw')
 export class WithdrawConsumer {
@@ -21,11 +21,11 @@ export class WithdrawConsumer {
   ) { }
 
   @Process('withdraw')
-  async execute(job: Job<GenericJob>) {
-    const { type, from, value } = job.data;
+  async execute(job: Job<WithdrawJob>) {
+    const { type, origin, value } = job.data;
     await this.withdrawService.execute({
       type,
-      from,
+      origin,
       value,
     });
   }

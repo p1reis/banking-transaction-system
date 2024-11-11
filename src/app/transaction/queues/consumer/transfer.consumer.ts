@@ -11,7 +11,7 @@ import {
 
 import { TransferService } from '../../services/transfer.service';
 import { HttpStatus, Logger } from '@nestjs/common';
-import { GenericJob } from '@/src/domain/interfaces/genericJob.interface';
+import { TransferJob } from '@/src/domain/interfaces/jobs.interface';
 
 @Processor('transfer')
 export class TransferConsumer {
@@ -21,12 +21,12 @@ export class TransferConsumer {
   ) { }
 
   @Process('transfer')
-  async execute(job: Job<GenericJob>) {
-    const { type, from, to, value } = job.data;
+  async execute(job: Job<TransferJob>) {
+    const { type, origin, destiny, value } = job.data;
     await this.transferService.execute({
       type,
-      from,
-      to,
+      origin,
+      destiny,
       value,
     });
   }

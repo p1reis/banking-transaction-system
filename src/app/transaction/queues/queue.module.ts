@@ -8,7 +8,6 @@ import { CustomCacheModule } from '../cache/cache.module';
 import { DepositService } from '../services/deposit.service';
 import { WithdrawService } from '../services/withdraw.service';
 import { TransferService } from '../services/transfer.service';
-import { CreateTransactionService } from '../services/create-transaction.service';
 import { DepositConsumer } from './consumer/deposit.consumer';
 import { WithdrawConsumer } from './consumer/withdraw.consumer';
 import { TransferConsumer } from './consumer/transfer.consumer';
@@ -47,7 +46,6 @@ import { AccountsToCacheUtils } from '../../utils/accounts-to-cache.utils';
     DepositService,
     WithdrawService,
     TransferService,
-    CreateTransactionService,
 
     DepositConsumer,
     WithdrawConsumer,
