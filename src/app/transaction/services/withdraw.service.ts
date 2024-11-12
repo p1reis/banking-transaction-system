@@ -1,49 +1,51 @@
-import { HttpException, HttpStatus } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 
-import { AccountRepository } from '@/src/domain/repositories/account.repository';
+import { TransactionRepository } from '@/src/domain/repositories/transaction.repository';
 
-import { CreateTransactionService } from './create-transaction.service';
 import { CreateWithdrawDto } from '../dto/create-withdraw.dto';
-import { CheckAccountUtils } from '../../utils/check-account.utils';
 import { AccountsToCacheUtils } from '../../utils/accounts-to-cache.utils';
+import { CheckAccountUtils } from '../../utils/check-account.utils';
 import { WithdrawMapper } from '../mappers/transaction.mapper';
 
+@Injectable()
 export class WithdrawService {
   constructor(
-    private readonly accountRepository: AccountRepository,
+    private readonly transactionRepository: TransactionRepository,
     private readonly checkAccountUtils: CheckAccountUtils,
     private readonly sendAccountToCache: AccountsToCacheUtils,
-    private readonly createTransaction: CreateTransactionService,
   ) { }
 
-  async execute({ from, value }: CreateWithdrawDto) {
+  async execute({ origin, amount }: CreateWithdrawDto) {
     const { cuid, balance } =
-      await this.checkAccountUtils.checkIfAccountExistsByNumber(from);
+      await this.checkAccountUtils.checkIfAccountExistsByNumber(origin);
 
     if (!cuid) {
-      throw new HttpException('Account not found.', HttpStatus.NOT_FOUND);
+      throw new HttpException(
+        'Account not found.',
+        HttpStatus.NOT_FOUND,
+      );
     }
 
-    if (balance < value) {
+    if (amount < 0) {
+      throw new HttpException(
+        'Amount value must be positive.',
+        HttpStatus.NOT_FOUND,
+      );
+    }
+
+    if (balance < amount) {
       throw new HttpException(
         'Your balance is not enough to proceed.',
         HttpStatus.BAD_REQUEST,
       );
     }
 
-    const newBalance = balance - value;
-
-    const updated = await this.accountRepository.updateBalance(
+    const withdraw = await this.transactionRepository.processWithdraw(
       cuid,
-      newBalance,
+      amount,
     );
-    const transaction = await this.createTransaction.execute({
-      type: 'WITHDRAW',
-      cuid,
-      value,
-    });
 
-    await this.sendAccountToCache.sendingAccountsToCache([updated]);
-    return WithdrawMapper.map(transaction)
+    await this.sendAccountToCache.sendingAccountsToCache([withdraw[0]]);
+    return WithdrawMapper.map(withdraw[1])
   }
 }

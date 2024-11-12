@@ -14,18 +14,18 @@ export class TransactionService {
     private readonly withdrawProcessor: WithdrawProcessor,
     private readonly transferProcessor: TransferProcessor,
     private readonly checkingJobs: CheckJobsDeposit,
-  ) {}
+  ) { }
 
-  async deposit({ type, from, value }: CreateDepositDto) {
-    return await this.depositProcessor.execute({ type, from, value });
+  async deposit({ type, destiny, amount }: CreateDepositDto) {
+    return await this.depositProcessor.execute({ type, destiny, amount });
   }
 
-  async withdraw({ type, from, value }: CreateWithdrawDto) {
-    return await this.withdrawProcessor.execute({ type, from, value });
+  async withdraw({ type, origin, amount }: CreateWithdrawDto) {
+    return await this.withdrawProcessor.execute({ type, origin, amount });
   }
 
-  async transfer({ type, from, to, value }: CreateTransferDto) {
-    return await this.transferProcessor.execute({ type, from, to, value });
+  async transfer({ type, origin, destiny, amount }: CreateTransferDto) {
+    return await this.transferProcessor.execute({ type, origin, destiny, amount });
   }
 
   async checkJobs() {

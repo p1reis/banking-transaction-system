@@ -11,7 +11,7 @@ import {
 
 import { DepositService } from '../../services/deposit.service';
 import { HttpStatus, Logger } from '@nestjs/common';
-import { GenericJob } from '@/src/domain/interfaces/genericJob.interface';
+import { DepositJob } from '@/src/domain/interfaces/jobs.interface';
 
 @Processor('deposit')
 export class DepositConsumer {
@@ -21,12 +21,12 @@ export class DepositConsumer {
   ) { }
 
   @Process('deposit')
-  async execute(job: Job<GenericJob>) {
-    const { type, from, value } = job.data;
+  async execute(job: Job<DepositJob>) {
+    const { type, destiny, amount } = job.data;
     await this.depositService.execute({
       type,
-      from,
-      value,
+      destiny,
+      amount,
     });
   }
 
