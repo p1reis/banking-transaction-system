@@ -1,10 +1,13 @@
-import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 
 import { CreateTransferDto } from '../dto/create-transfer.dto';
 import { CheckAccountUtils } from '../../utils/check-account.utils';
 import { AccountsToCacheUtils } from '../../utils/accounts-to-cache.utils';
 import { TransferMapper } from '../mappers/transaction.mapper';
 import { TransactionRepository } from '@/src/domain/repositories/transaction.repository';
+
+import { InsufficientBalance } from '../errors/handler.exception';
+import { AccountNotFound } from '@/src/shared/errors/handler.exception';
 
 @Injectable()
 export class TransferService {
@@ -21,24 +24,15 @@ export class TransferService {
       await this.checkAccountUtils.checkIfAccountExistsByNumber(destiny);
 
     if (!originCuid) {
-      throw new HttpException(
-        'Origin account not found.',
-        HttpStatus.NOT_FOUND,
-      );
+      throw new AccountNotFound("Origin", origin)
     }
 
     if (!destinyCuid) {
-      throw new HttpException(
-        'Destiny account not found.',
-        HttpStatus.NOT_FOUND,
-      );
+      throw new AccountNotFound("Destiny", destiny)
     }
 
     if (originBalance < amount) {
-      throw new HttpException(
-        'Insufficient balance in the origin account.',
-        HttpStatus.BAD_REQUEST,
-      );
+      throw new InsufficientBalance()
     }
 
     const transfer = await this.transactionRepository.processTransfer(originCuid, destinyCuid, amount)

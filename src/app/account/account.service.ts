@@ -1,4 +1,4 @@
-import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 
 import { AccountRepository } from '@/src/domain/repositories/account.repository';
 
@@ -10,6 +10,9 @@ import { CreateAccountDto } from './dto/create-account.dto';
 import { UpdateAccountDto } from './dto/update-account.dto';
 import { CheckAccountUtils } from '../utils/check-account.utils';
 import { AccountsToCacheUtils } from '../utils/accounts-to-cache.utils';
+
+import { AccountAlreadyExists, AccountCreationFailed } from './errors/handler.exception';
+import { AccountNotFound, ValueMustBePositive } from '@/src/shared/errors/handler.exception';
 
 @Injectable()
 export class AccountService {
@@ -33,17 +36,11 @@ export class AccountService {
         });
 
       if (accountExists) {
-        throw new HttpException(
-          'Account already exists.',
-          HttpStatus.BAD_REQUEST,
-        );
+        throw new AccountAlreadyExists(firstName, lastName)
       }
 
       if (balance < 0) {
-        throw new HttpException(
-          'Balance must be a positive value.',
-          HttpStatus.BAD_REQUEST,
-        );
+        throw new ValueMustBePositive('Balance')
       }
 
       const newAccount = await this.accountRepository.create({
@@ -58,10 +55,7 @@ export class AccountService {
 
       return AccountMapper.newAccount(newAccount);
     } catch (error) {
-      throw new HttpException(
-        `Account creation failed: ${error.message}`,
-        HttpStatus.INTERNAL_SERVER_ERROR,
-      );
+      throw new AccountCreationFailed(error)
     }
   }
 
@@ -83,7 +77,7 @@ export class AccountService {
       return AccountMapper.accountFound(accountInDatabase);
     }
 
-    throw new HttpException('Account not found', HttpStatus.NOT_FOUND);
+    throw new AccountNotFound('This', number);
   }
 
   updateAccount(number: string, updateAccountDto: UpdateAccountDto) {
