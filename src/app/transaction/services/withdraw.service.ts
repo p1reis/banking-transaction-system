@@ -1,4 +1,4 @@
-import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 
 import { TransactionRepository } from '@/src/domain/repositories/transaction.repository';
 
@@ -6,6 +6,9 @@ import { CreateWithdrawDto } from '../dto/create-withdraw.dto';
 import { AccountsToCacheUtils } from '../../utils/accounts-to-cache.utils';
 import { CheckAccountUtils } from '../../utils/check-account.utils';
 import { WithdrawMapper } from '../mappers/transaction.mapper';
+
+import { AccountNotFound, ValueMustBePositive } from '@/src/shared/errors/handler.exception';
+import { InsufficientBalance } from '../errors/handler.exception';
 
 @Injectable()
 export class WithdrawService {
@@ -20,24 +23,15 @@ export class WithdrawService {
       await this.checkAccountUtils.checkIfAccountExistsByNumber(origin);
 
     if (!cuid) {
-      throw new HttpException(
-        'Account not found.',
-        HttpStatus.NOT_FOUND,
-      );
+      throw new AccountNotFound("Origin", origin)
     }
 
     if (amount < 0) {
-      throw new HttpException(
-        'Amount value must be positive.',
-        HttpStatus.NOT_FOUND,
-      );
+      throw new ValueMustBePositive('Amount')
     }
 
     if (balance < amount) {
-      throw new HttpException(
-        'Your balance is not enough to proceed.',
-        HttpStatus.BAD_REQUEST,
-      );
+      throw new InsufficientBalance()
     }
 
     const withdraw = await this.transactionRepository.processWithdraw(
