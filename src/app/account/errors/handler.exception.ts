@@ -1,13 +1,13 @@
 import { HttpException, HttpStatus } from "@nestjs/common";
 
 export class AccountAlreadyExists extends HttpException {
-    constructor(firstName: string, lastName: string) {
+    constructor(cpf: string) {
         super(
             {
                 error: `Account already exists.`,
-                message: `Sorry! ${firstName} ${lastName} already had an account`,
+                message: `Sorry! CPF number ${cpf} is already registered.`,
             },
-            HttpStatus.BAD_REQUEST,
+            HttpStatus.CONFLICT,
         );
     }
 }

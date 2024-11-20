@@ -7,6 +7,7 @@ export class AccountMapper {
       account: {
         number: raw?.number,
         name: `${raw?.firstName} ${raw?.lastName}`,
+        cpf: raw.cpf,
         balance: raw?.balance ? raw?.balance : 0,
         createdAt: raw?.createdAt,
       },

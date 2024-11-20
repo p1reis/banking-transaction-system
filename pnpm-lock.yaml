@@ -35,6 +35,9 @@ importers:
       '@prisma/client':
         specifier: ^5.22.0
         version: 5.22.0(prisma@5.22.0)
+      brazilian-values:
+        specifier: ^0.13.0
+        version: 0.13.0
       bull:
         specifier: ^4.16.4
         version: 4.16.4
@@ -1140,6 +1143,9 @@ packages:
   braces@3.0.3:
     resolution: {integrity: sha512-yQbXgO/OSZVD2IsiLlro+7Hf6Q18EJrKSEsdoMzKePKXct3gvD8oLcOQdIzGupr5Fj+EDe8gO/lxc1BzfMpxvA==}
     engines: {node: '>=8'}
+
+  brazilian-values@0.13.0:
+    resolution: {integrity: sha512-gpEgD2+LUh0irOj2EfQsGm1uRcX+Pb+1qSLJtUYFUVkJi+NUc0uGa0TWDof36d0D+jrQpP4h8Vi5GIhT6bmjzw==}
 
   browserslist@4.24.2:
     resolution: {integrity: sha512-ZIc+Q62revdMcqC6aChtW4jz3My3klmCO1fEmINZY/8J3EpBg5/A/D0AKmBveUh6pgoeycoMkVMko84tuYS+Gg==}
@@ -4412,6 +4418,8 @@ snapshots:
   braces@3.0.3:
     dependencies:
       fill-range: 7.1.1
+
+  brazilian-values@0.13.0: {}
 
   browserslist@4.24.2:
     dependencies:

@@ -10,26 +10,23 @@ export class CheckAccountUtils {
   constructor(
     @Inject(CACHE_MANAGER) private cacheManager: Cache,
     private readonly accountRepository: AccountRepository,
-  ) {}
+  ) { }
 
-  async checkIfAccountExistsByName({ firstName, lastName }): Promise<Account> {
+  async checkIfAccountExistsByCpf(cpf): Promise<Account> {
     const accountsInCache = await this.cacheManager.get<string>(`accounts`);
 
     if (accountsInCache) {
       const accounts = JSON.parse(accountsInCache);
 
       const account = accounts.find(
-        (acc: { firstName: string; lastName: string }) =>
-          acc.firstName === firstName && acc.lastName === lastName,
+        (acc: { cpf: string }) =>
+          acc.cpf === cpf,
       );
 
       return account ? account : null;
     }
 
-    const accountInDatabase = await this.accountRepository.findUniqueByName(
-      firstName,
-      lastName,
-    );
+    const accountInDatabase = await this.accountRepository.findUnique(cpf);
 
     return accountInDatabase ? accountInDatabase : null;
   }

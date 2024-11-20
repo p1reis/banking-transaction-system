@@ -12,7 +12,8 @@ import { CheckAccountUtils } from '../utils/check-account.utils';
 import { AccountsToCacheUtils } from '../utils/accounts-to-cache.utils';
 
 import { AccountAlreadyExists, AccountCreationFailed } from './errors/handler.exception';
-import { AccountNotFound, ValueMustBePositive } from '@/src/shared/errors/handler.exception';
+import { AccountNotFound, CpfInvalid, ValueMustBePositive } from '@/src/shared/errors/handler.exception';
+import { isCPF } from 'brazilian-values';
 
 @Injectable()
 export class AccountService {
@@ -26,27 +27,32 @@ export class AccountService {
   async createAccount({
     firstName,
     lastName,
+    cpf,
     balance,
   }: CreateAccountDto): Promise<CreateAccountMapped> {
     try {
       const accountExists =
-        await this.checkAccountUtils.checkIfAccountExistsByName({
-          firstName,
-          lastName,
-        });
+        await this.checkAccountUtils.checkIfAccountExistsByCpf(cpf);
 
       if (accountExists) {
-        throw new AccountAlreadyExists(firstName, lastName)
+        throw new AccountAlreadyExists(cpf)
       }
 
       if (balance < 0) {
         throw new ValueMustBePositive('Balance')
       }
 
+      const cpfIsValid = isCPF(cpf)
+
+      if (!cpfIsValid) {
+        throw new CpfInvalid(cpf)
+      }
+
       const newAccount = await this.accountRepository.create({
         number: this.generateAccountNumber.generateAccountNumber(),
         firstName,
         lastName,
+        cpf,
         balance,
       });
 
@@ -55,7 +61,7 @@ export class AccountService {
 
       return AccountMapper.newAccount(newAccount);
     } catch (error) {
-      throw new AccountCreationFailed(error)
+      throw new AccountCreationFailed(error.message)
     }
   }
 
