@@ -10,7 +10,7 @@ import {
 } from '@nestjs/bull';
 
 import { TransferService } from '../../services/transfer.service';
-import { HttpStatus, Logger } from '@nestjs/common';
+import { Logger } from '@nestjs/common';
 import { TransferJob } from '@/src/domain/interfaces/jobs.interface';
 
 @Processor('transfer')
@@ -57,8 +57,7 @@ export class TransferConsumer {
   @OnQueueFailed()
   public async onQueueFailed(job: Job): Promise<void> {
     Logger.log(
-      `${job.name} in job ${job.id} has failed: ${job.failedReason}`,
-      HttpStatus.BAD_REQUEST,
+      `${job.name} in job ${job.id} has failed: ${job.failedReason}`
     );
   }
 }

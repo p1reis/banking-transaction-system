@@ -10,7 +10,7 @@ import {
 } from '@nestjs/bull';
 
 import { WithdrawService } from '../../services/withdraw.service';
-import { HttpStatus, Logger } from '@nestjs/common';
+import { Logger } from '@nestjs/common';
 import { WithdrawJob } from '@/src/domain/interfaces/jobs.interface';
 
 @Processor('withdraw')
@@ -56,8 +56,7 @@ export class WithdrawConsumer {
   @OnQueueFailed()
   public async onQueueFailed(job: Job): Promise<void> {
     Logger.log(
-      `${job.name} in job ${job.id} has failed: ${job.failedReason}`,
-      HttpStatus.BAD_REQUEST,
+      `${job.name} in job ${job.id} has failed: ${job.failedReason}`
     );
   }
 }

@@ -10,7 +10,7 @@ import {
 } from '@nestjs/bull';
 
 import { DepositService } from '../../services/deposit.service';
-import { HttpStatus, Logger } from '@nestjs/common';
+import { Logger } from '@nestjs/common';
 import { DepositJob } from '@/src/domain/interfaces/jobs.interface';
 
 @Processor('deposit')
@@ -56,8 +56,7 @@ export class DepositConsumer {
   @OnQueueFailed()
   public async onQueueFailed(job: Job): Promise<void> {
     Logger.log(
-      `${job.name} in job ${job.id} has failed: ${job.failedReason}`,
-      HttpStatus.BAD_REQUEST,
+      `${job.name} in job ${job.id} has failed: ${job.failedReason}`
     );
   }
 }
