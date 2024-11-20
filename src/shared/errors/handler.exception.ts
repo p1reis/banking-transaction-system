@@ -37,3 +37,15 @@ export class InsufficientBalance extends HttpException {
         );
     }
 }
+
+export class CpfInvalid extends HttpException {
+    constructor(cpf: string) {
+        super(
+            {
+                error: `CPF invalid`,
+                message: `This CPF is not valid.`,
+            },
+            HttpStatus.BAD_REQUEST,
+        );
+    }
+}

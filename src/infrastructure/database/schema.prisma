@@ -13,6 +13,7 @@ model Account {
   number              String        @unique @map("Numero")
   firstName           String        @map("Nome")
   lastName            String        @map("Sobrenome")
+  cpf                 String        @unique @map("CPF")
   balance             Float         @map("Saldo")
   createdAt           DateTime      @default(now())
   updatedAt           DateTime      @default(now()) @updatedAt

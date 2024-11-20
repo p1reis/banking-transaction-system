@@ -1,4 +1,4 @@
-import { IsNotEmpty, IsNumber, IsPositive, IsString } from 'class-validator';
+import { IsNotEmpty, IsNumber, IsPositive, IsString, Matches } from 'class-validator';
 
 export class CreateAccountDto {
   @IsString()
@@ -8,6 +8,11 @@ export class CreateAccountDto {
   @IsString()
   @IsNotEmpty({ message: `"lastName" field must be an valid account number` })
   lastName: string;
+
+  @IsString()
+  @IsNotEmpty()
+  @Matches(/^\d{11}$|^\d{3}\.\d{3}\.\d{3}\-\d{2}$/, { message: 'CPF must match a valid CPF format' })
+  cpf: string;
 
   @IsPositive()
   @IsNotEmpty()

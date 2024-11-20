@@ -13,6 +13,7 @@ export class AccountsToCacheUtils {
       cuid: account.cuid,
       number: account.number,
       name: `${account.firstName} ${account.lastName}`,
+      cpf: account.cpf,
       balance: account.balance,
     }));
 

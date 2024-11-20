@@ -30,6 +30,7 @@
     "@nestjs/microservices": "^10.4.8",
     "@nestjs/platform-express": "^10.4.8",
     "@prisma/client": "^5.22.0",
+    "brazilian-values": "^0.13.0",
     "bull": "^4.16.4",
     "cache-manager": "5.7.6",
     "cache-manager-redis-yet": "^5.1.5",

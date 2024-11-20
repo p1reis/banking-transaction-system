@@ -3,6 +3,7 @@ export interface CreateAccountMapped {
   account: {
     number: string;
     name: string;
+    cpf: string;
     balance: number;
   };
 }

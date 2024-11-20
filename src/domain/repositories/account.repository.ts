@@ -29,18 +29,4 @@ export class AccountRepository {
   async findAll(): Promise<Account[]> {
     return await this.account.findMany();
   }
-
-  async findUniqueByName(
-    firstName: string,
-    lastName: string,
-  ): Promise<Account> {
-    return await this.account.findFirst({
-      where: {
-        AND: {
-          firstName: { equals: firstName },
-          lastName: { equals: lastName },
-        },
-      },
-    });
-  }
 }
